@@ -3,39 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Misa Landing Page</title>
+  <title>About me section</title> 
+
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+
+  <!-- ambient background music -->
+  <audio id="bgmusic" loop>
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
+
   <div class="page-frame">
     <div class="content-box">
+
       <div class="top-section">
+
         <div class="welcome-area">
           <h1>welcome</h1>
 
           <div class="input-box"></div>
 
           <div class="dots-row">
+
             <div class="user-tag">
               <span class="circle blue"></span>
-              <span>FullyShatteredComet</span>
+              <span>https://discord.gg/59BdrZxWgW</span>
             </div>
 
             <div class="user-tag">
               <span class="circle red"></span>
-              <span>okula9990</span>
+              <span>https://www.roblox.com/users/7536569678/profile</span>
             </div>
+
           </div>
         </div>
 
         <div class="image-panel">
           <img src="image4.jpg" alt="Misa Amane" />
+
           <div class="overlay-grid"></div>
         </div>
+
       </div>
 
       <div class="bottom-line"></div>
+
     </div>
   </div>
+
+  <!-- autoplay music after first interaction -->
+  <script>
+    window.addEventListener("click", () => {
+      const music = document.getElementById("bgmusic");
+      music.volume = 0.4;
+      music.play();
+    }, { once: true });
+  </script>
+
 </body>
 </html>

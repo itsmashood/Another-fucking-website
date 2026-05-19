@@ -1,0 +1,73 @@
+* {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 35px 35px;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.dots-row {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.user-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f1ecff;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(255,255,255,0.08);
+}
+
+.circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(255,255,255,0.25);
+}
+
+.circle.blue {
+  background: radial-gradient(circle at top left, #8bc7ff, #2449ff);
+}
+
+.circle.red {
+  background: radial-gradient(circle at top left, #ff8a9f, #d11f45);
+}
+
+.bottom-line {
+  width: 100%;
+  height: 2px;
+  margin-top: 90px;
+  border-bottom: 3px dashed #8f87a8;
+  opacity: 0.5;
+}
+
+@media (max-width: 850px) {
+  .top-section {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .welcome-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .welcome-area h1 {
+    font-size: 3rem;
+  }
+
+  .image-panel {
+    width: 260px;
+    height: 260px;
+  }
+}

@@ -9,10 +9,17 @@
 
 <body>
 
-  <!-- Background Music -->
-  <audio autoplay loop>
+  <!-- Background Music (FIXED) -->
+  <audio id="bg-music" loop>
     <source src="music.mp3" type="audio/mpeg">
   </audio>
+
+  <script>
+    window.addEventListener("click", function () {
+      const music = document.getElementById("bg-music");
+      music.play();
+    }, { once: true });
+  </script>
 
   <div class="page-frame">
     <div class="content-box">

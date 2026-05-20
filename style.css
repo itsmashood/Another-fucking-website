@@ -12,8 +12,8 @@ background:
 linear-gradient(
 135deg,
 #07100f,
-#101918,
-#162422
+#0d1716,
+#172523
 );
 
 color:white;
@@ -24,6 +24,8 @@ padding:40px 20px;
 
 }
 
+
+/* MAIN CONTAINER */
 
 .container{
 
@@ -39,15 +41,15 @@ background:
 rgba(10,15,15,.90);
 
 border:
-1px solid rgba(130,255,230,.15);
+1px solid rgba(130,255,230,.12);
 
 box-shadow:
-0 0 40px rgba(100,255,220,.06);
+0 0 50px rgba(120,255,220,.05);
 
 }
 
 
-/* HERO */
+/* TOP */
 
 .hero{
 
@@ -64,6 +66,7 @@ margin-bottom:50px;
 
 }
 
+
 h1{
 
 font-size:4rem;
@@ -77,8 +80,6 @@ color:#e7fff9;
 }
 
 
-/* INTRO */
-
 .intro{
 
 padding:18px;
@@ -91,14 +92,14 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.10);
+1px solid rgba(130,255,230,.1);
 
 margin-bottom:30px;
 
 }
 
 
-/* SOCIALS */
+/* CARDS */
 
 .socials{
 
@@ -109,6 +110,7 @@ gap:20px;
 flex-wrap:wrap;
 
 }
+
 
 .card{
 
@@ -124,9 +126,10 @@ rgba(255,255,255,.02);
 border:
 1px solid rgba(130,255,230,.10);
 
-transition:.4s;
+transition:.35s;
 
 }
+
 
 .card:hover{
 
@@ -139,6 +142,30 @@ rgba(130,255,230,.5);
 }
 
 
+.roblox-card{
+
+text-decoration:none;
+
+color:white;
+
+display:block;
+
+cursor:pointer;
+
+}
+
+
+.roblox-card:hover{
+
+box-shadow:
+0 0 20px rgba(255,90,90,.15);
+
+border-color:
+rgba(255,90,90,.5);
+
+}
+
+
 .label{
 
 display:flex;
@@ -147,17 +174,18 @@ align-items:center;
 
 gap:8px;
 
+margin-bottom:15px;
+
 font-size:.8rem;
 
 letter-spacing:2px;
 
-margin-bottom:15px;
-
-color:#93dbc9;
-
 text-transform:uppercase;
 
+color:#90dbc8;
+
 }
+
 
 .user{
 
@@ -166,8 +194,6 @@ display:flex;
 align-items:center;
 
 gap:10px;
-
-font-size:1rem;
 
 }
 
@@ -181,15 +207,17 @@ border-radius:50%;
 
 }
 
+
 .blue{
 
-background:#73e6ff;
+background:#6be4ff;
 
 }
 
+
 .red{
 
-background:#ff6666;
+background:#ff5d5d;
 
 }
 
@@ -218,9 +246,10 @@ overflow:hidden;
 border-radius:18px;
 
 border:
-1px solid rgba(130,255,230,.15);
+1px solid rgba(130,255,230,.12);
 
 }
+
 
 .profile img{
 
@@ -236,7 +265,7 @@ contrast(1.1);
 }
 
 
-/* SERVER */
+/* SECTIONS */
 
 .server-section,
 .music{
@@ -251,7 +280,7 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.10);
+1px solid rgba(130,255,230,.1);
 
 }
 
@@ -264,9 +293,9 @@ letter-spacing:3px;
 
 margin-bottom:20px;
 
-text-transform:uppercase;
+color:#99e7d4;
 
-color:#9cead6;
+text-transform:uppercase;
 
 }
 
@@ -281,7 +310,7 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.10);
+1px solid rgba(130,255,230,.1);
 
 display:flex;
 
@@ -294,25 +323,28 @@ gap:15px;
 
 .server-box a{
 
-color:#7fead8;
-
-text-decoration:none;
+color:#73e6ff;
 
 font-size:1.1rem;
+
+text-decoration:none;
 
 transition:.3s;
 
 }
+
 
 .server-box a:hover{
 
 color:white;
 
 text-shadow:
-0 0 15px rgba(127,234,216,.8);
+0 0 15px rgba(115,230,255,.8);
 
 }
 
+
+/* MUSIC */
 
 .music img{
 

@@ -10,14 +10,13 @@ body {
   justify-content: center;
   align-items: center;
 
-  background:
-    linear-gradient(
-      135deg,
-      #0a1110,
-      #13201d,
-      #1c2f2b,
-      #090d0c
-    );
+  background: linear-gradient(
+    135deg,
+    #0a1110,
+    #13201d,
+    #1c2f2b,
+    #090d0c
+  );
 
   font-family: "Courier New", monospace;
   color: #f4f4f4;
@@ -32,12 +31,7 @@ body {
   border: 3px solid #5f8f89;
   border-radius: 6px;
 
-  background:
-    linear-gradient(
-      180deg,
-      #182321,
-      #101716
-    );
+  background: linear-gradient(180deg, #182321, #101716);
 
   box-shadow:
     0 0 30px rgba(122, 201, 188, 0.08),
@@ -52,20 +46,16 @@ body {
   border: 2px solid #6fa59d;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(180, 255, 240, 0.03),
-      rgba(0,0,0,0.2)
-    ),
+    linear-gradient(145deg, rgba(180,255,240,0.03), rgba(0,0,0,0.2)),
     #121918;
 
   position: relative;
 }
 
+/* TOP SECTION */
 .top-section {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 40px;
   flex-wrap: wrap;
 }
@@ -77,15 +67,11 @@ body {
 
 .welcome-area h1 {
   font-size: 4rem;
-  font-weight: 400;
   letter-spacing: 6px;
   margin-bottom: 50px;
 
   color: #d7fff7;
-
-  text-shadow:
-    0 0 12px rgba(160, 255, 240, 0.25),
-    0 0 25px rgba(110, 180, 170, 0.18);
+  text-shadow: 0 0 25px rgba(110,180,170,0.18);
 }
 
 .input-box {
@@ -96,12 +82,7 @@ body {
 
   border: 2px solid #7eb8af;
 
-  background:
-    linear-gradient(
-      to right,
-      #243532,
-      #172220
-    );
+  background: linear-gradient(to right, #243532, #172220);
 
   clip-path: polygon(
     10% 0%,
@@ -110,10 +91,6 @@ body {
     0% 100%
   );
 
-  box-shadow:
-    inset 0 0 12px rgba(255,255,255,0.03),
-    0 0 18px rgba(120, 210, 195, 0.08);
-
   margin-bottom: 70px;
 
   display: flex;
@@ -121,15 +98,13 @@ body {
 }
 
 .input-box p {
-  color: #d8fff7;
   font-size: 0.9rem;
-  line-height: 1.5;
+  color: #d8fff7;
 }
 
 .dots-row {
   display: flex;
   gap: 40px;
-  align-items: flex-start;
   flex-wrap: wrap;
 }
 
@@ -140,72 +115,52 @@ body {
 }
 
 .social-title {
-  color: #bff7ec;
   font-size: 0.8rem;
   letter-spacing: 3px;
   text-transform: uppercase;
+  color: #bff7ec;
 }
 
 .user-tag {
   display: flex;
   align-items: center;
   gap: 12px;
-
   color: #ecfffb;
-  font-size: 1rem;
-  letter-spacing: 1px;
-
-  text-shadow:
-    0 0 8px rgba(255,255,255,0.08);
 }
 
+/* ICONS */
 .circle {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  display: inline-block;
 }
 
 .circle.blue {
-  background:
-    radial-gradient(circle at top left, #d8fffa, #6cc7b7);
-
-  box-shadow:
-    0 0 15px rgba(140, 255, 235, 0.35);
+  background: radial-gradient(circle at top left, #d8fffa, #6cc7b7);
 }
 
 .circle.red {
-  background:
-    radial-gradient(circle at top left, #ffb3b3, #c44b4b);
+  background: radial-gradient(circle at top left, #ffb3b3, #c44b4b);
 }
 
 .roblox-avatar {
   width: 32px;
   height: 32px;
-
   border-radius: 50%;
-  object-fit: cover;
-
   border: 2px solid #8ed2c7;
-
-  box-shadow:
-    0 0 12px rgba(150,255,230,0.2);
 }
 
+/* IMAGE PANEL */
 .image-panel {
   width: 320px;
   height: 320px;
-
   position: relative;
   overflow: hidden;
 
   border: 3px solid #86c0b6;
-
   background: #111;
 
-  box-shadow:
-    0 0 25px rgba(120, 220, 205, 0.12),
-    inset 0 0 20px rgba(255,255,255,0.03);
+  box-shadow: 0 0 25px rgba(120,220,205,0.12);
 }
 
 .image-panel img {
@@ -213,12 +168,7 @@ body {
   height: 100%;
   object-fit: cover;
 
-  filter:
-    grayscale(10%)
-    contrast(1.05)
-    brightness(0.82)
-    saturate(0.8)
-    hue-rotate(-8deg);
+  filter: grayscale(10%) contrast(1.05) brightness(0.82);
 }
 
 .overlay-grid {
@@ -230,79 +180,66 @@ body {
     linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
 
   background-size: 35px 35px;
-
   mix-blend-mode: screen;
-  pointer-events: none;
 }
 
-/* ===== MUSIC BANNER SECTION ===== */
-
-.extra-image {
+/* NEW SMALL IMAGE (182x277) */
+.small-art {
   width: 100%;
-  margin-top: 25px;
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  margin-top: 25px;
+}
+
+.small-art img {
+  width: 182px;
+  height: 277px;
+  object-fit: cover;
+
+  border: 2px solid #6fa59d;
+  border-radius: 6px;
+
+  box-shadow: 0 0 15px rgba(120,220,205,0.12);
+}
+
+/* MUSIC BANNER */
+.extra-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
 }
 
 .song-banner {
   width: 100%;
   max-width: 900px;
   height: 95px;
-
   object-fit: cover;
 
   border: 2px solid #6fa59d;
 
-  box-shadow:
-    0 0 18px rgba(120, 220, 205, 0.12);
-
-  animation: pulseGlow 3s infinite ease-in-out;
+  animation: glow 3s infinite ease-in-out;
+  box-shadow: 0 0 18px rgba(120,220,205,0.12);
 }
 
-/* glowing “now playing” effect */
-@keyframes pulseGlow {
-  0% {
-    filter: brightness(0.9);
-    box-shadow: 0 0 10px rgba(120, 220, 205, 0.08);
-  }
-  50% {
-    filter: brightness(1.05);
-    box-shadow: 0 0 22px rgba(120, 220, 205, 0.18);
-  }
-  100% {
-    filter: brightness(0.9);
-    box-shadow: 0 0 10px rgba(120, 220, 205, 0.08);
-  }
+@keyframes glow {
+  0%,100% { filter: brightness(0.9); }
+  50% { filter: brightness(1.05); }
 }
 
-/* bottom line */
+/* BOTTOM LINE */
 .bottom-line {
   width: 100%;
-  height: 2px;
-
   margin-top: 90px;
-
   border-bottom: 3px dashed #79b3a8;
-
   opacity: 0.5;
 }
 
+/* MOBILE */
 @media (max-width: 850px) {
-
   .top-section {
     justify-content: center;
     text-align: center;
-  }
-
-  .welcome-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .welcome-area h1 {
-    font-size: 3rem;
   }
 
   .image-panel {
@@ -310,7 +247,7 @@ body {
     height: 260px;
   }
 
-  .dots-row {
-    justify-content: center;
+  .welcome-area h1 {
+    font-size: 3rem;
   }
 }

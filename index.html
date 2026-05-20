@@ -3,18 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About me section</title> 
-
+  <title>Misa Landing Page</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
-  <!-- ambient background music -->
-  <audio id="bgmusic" loop>
-    <source src="music.mp3" type="audio/mp3">
-  </audio>
-
   <div class="page-frame">
     <div class="content-box">
 
@@ -23,26 +16,44 @@
         <div class="welcome-area">
           <h1>welcome</h1>
 
-          <div class="input-box"></div>
+          <div class="input-box">
+            <p>
+              Join my discord for expose files of creeps or bad people
+            </p>
+          </div>
 
           <div class="dots-row">
 
-            <div class="user-tag">
-              <span class="circle blue"></span>
-              <span>https://discord.gg/59BdrZxWgW</span>
+            <div class="social-group">
+              <div class="social-title">discord</div>
+
+              <div class="user-tag">
+                <span class="circle blue"></span>
+                <span>FullyShatteredComet</span>
+              </div>
             </div>
 
-            <div class="user-tag">
-              <span class="circle red"></span>
-              <span>https://www.roblox.com/users/7536569678/profile</span>
+            <div class="social-group">
+              <div class="social-title">roblox</div>
+
+              <div class="user-tag">
+                <span class="circle red"></span>
+
+                <img
+                  class="roblox-avatar"
+                  src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-2682F4FCAA1242C17E11BE361D5697D4-Png/150/150/AvatarHeadshot/Webp/noFilter"
+                  alt="Roblox Avatar"
+                />
+
+                <span>okula9990</span>
+              </div>
             </div>
 
           </div>
         </div>
 
         <div class="image-panel">
-          <img src="image4.jpg" alt="Misa Amane" />
-
+          <img src="image4.jpg" alt="Misa" />
           <div class="overlay-grid"></div>
         </div>
 
@@ -52,15 +63,5 @@
 
     </div>
   </div>
-
-  <!-- autoplay music after first interaction -->
-  <script>
-    window.addEventListener("click", () => {
-      const music = document.getElementById("bgmusic");
-      music.volume = 0.4;
-      music.play();
-    }, { once: true });
-  </script>
-
 </body>
 </html>

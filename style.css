@@ -6,7 +6,6 @@ box-sizing:border-box;
 
 body{
 font-family:"Courier New", monospace;
-
 background:linear-gradient(
 135deg,
 #07100f,
@@ -16,18 +15,20 @@ background:linear-gradient(
 
 color:white;
 min-height:100vh;
-padding:25px;
+padding:20px;
 }
 
 
 /* MAIN CONTAINER */
 
 .container{
+width:100%;
 max-width:1000px;
-margin:auto;
-padding:30px;
 
-border-radius:20px;
+margin:auto;
+padding:28px;
+
+border-radius:22px;
 
 background:rgba(10,15,15,.92);
 
@@ -38,16 +39,19 @@ box-shadow:
 }
 
 
-/* HERO */
+/* HERO TOP SECTION */
 
 .hero{
 display:grid;
-grid-template-columns:1fr 260px;
-gap:35px;
+
+grid-template-columns:
+1fr 260px;
+
+gap:30px;
 
 align-items:center;
 
-margin-bottom:30px;
+margin-bottom:25px;
 }
 
 
@@ -55,7 +59,8 @@ margin-bottom:30px;
 
 h1{
 font-size:3.5rem;
-letter-spacing:5px;
+
+letter-spacing:6px;
 
 margin-bottom:25px;
 
@@ -63,7 +68,7 @@ color:#e7fff9;
 }
 
 
-/* INTRO */
+/* INTRO BOX */
 
 .intro{
 
@@ -71,12 +76,13 @@ padding:16px;
 
 line-height:1.6;
 
-border-radius:12px;
+border-radius:14px;
 
-background:rgba(255,255,255,.02);
+background:
+rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.1);
+1px solid rgba(130,255,230,.08);
 
 margin-bottom:25px;
 }
@@ -103,10 +109,11 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.1);
+1px solid rgba(130,255,230,.08);
 
 transition:.3s;
 }
+
 
 .card:hover{
 
@@ -120,7 +127,6 @@ rgba(130,255,230,.5);
 .roblox-card{
 text-decoration:none;
 color:white;
-display:block;
 }
 
 
@@ -130,7 +136,7 @@ box-shadow:
 0 0 20px rgba(255,90,90,.15);
 
 border-color:
-rgba(255,90,90,.5);
+rgba(255,90,90,.4);
 }
 
 
@@ -154,6 +160,7 @@ text-transform:uppercase;
 color:#90dbc8;
 }
 
+
 .user{
 
 display:flex;
@@ -164,10 +171,8 @@ gap:10px;
 
 
 .circle{
-
 width:12px;
 height:12px;
-
 border-radius:50%;
 }
 
@@ -192,7 +197,7 @@ border:
 }
 
 
-/* PROFILE */
+/* PROFILE IMAGE */
 
 .profile{
 
@@ -205,6 +210,7 @@ border-radius:18px;
 border:
 1px solid rgba(130,255,230,.12);
 }
+
 
 .profile img{
 
@@ -219,7 +225,7 @@ contrast(1.1);
 }
 
 
-/* SERVER SECTION */
+/* SERVER */
 
 .server-section{
 
@@ -233,8 +239,9 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.1);
+1px solid rgba(130,255,230,.08);
 }
+
 
 h2{
 
@@ -249,6 +256,7 @@ color:#99e7d4;
 text-transform:uppercase;
 }
 
+
 .server-box{
 
 padding:18px;
@@ -259,12 +267,14 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.1);
+1px solid rgba(130,255,230,.08);
 
 display:flex;
 flex-direction:column;
+
 gap:12px;
 }
+
 
 .server-box a{
 
@@ -284,16 +294,15 @@ text-shadow:
 }
 
 
-/* AIZEN GIF */
+/* FULL WIDTH GIF SECTION */
 
 .gif-section{
 
 margin-top:25px;
 
-display:flex;
-justify-content:center;
+width:100%;
 
-padding:12px;
+padding:20px;
 
 border-radius:16px;
 
@@ -301,38 +310,42 @@ background:
 rgba(255,255,255,.02);
 
 border:
-1px solid rgba(130,255,230,.1);
+1px solid rgba(130,255,230,.08);
 
-max-width:500px;
+display:flex;
+justify-content:center;
+align-items:center;
 
-margin-left:auto;
-margin-right:auto;
+overflow:hidden;
 }
 
+
+/* GIF */
 
 .aizen-gif{
 
 width:100%;
 
-max-width:420px;
+max-width:850px;
 
-/* important: keeps full GIF visible */
+/* preserve full GIF */
 height:auto;
 
 display:block;
 
-border-radius:12px;
+border-radius:14px;
 
 filter:
-brightness(.9)
-contrast(1.1);
+brightness(.95)
+contrast(1.05);
 
 transition:.3s;
 }
 
+
 .aizen-gif:hover{
 
-transform:scale(1.03);
+transform:scale(1.02);
 }
 
 
@@ -356,11 +369,7 @@ margin:auto;
 }
 
 h1{
-font-size:2.8rem;
-}
-
-.gif-section{
-max-width:100%;
+font-size:2.7rem;
 }
 
 .aizen-gif{

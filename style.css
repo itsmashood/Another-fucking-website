@@ -6,27 +6,29 @@ box-sizing:border-box;
 
 body{
 
-font-family:"Courier New", monospace;
+font-family:'Outfit',sans-serif;
 
 background:
 linear-gradient(
 135deg,
-#07040d 0%,
-#11091f 30%,
-#211338 65%,
+#040308 0%,
+#0b0815 25%,
+#1a1230 65%,
 #37225d 100%
 );
 
-color:white;
+color:#f7f4ff;
 
 min-height:100vh;
 
 padding:25px;
 
+overflow-x:hidden;
+
 }
 
 
-/* MAIN CONTAINER */
+/* CONTAINER */
 
 .container{
 
@@ -36,18 +38,18 @@ margin:auto;
 
 padding:35px;
 
-border-radius:25px;
+border-radius:30px;
 
 background:
-rgba(13,10,25,.88);
+rgba(10,8,20,.82);
 
-backdrop-filter:blur(15px);
+backdrop-filter:blur(20px);
 
 border:
-1px solid rgba(180,120,255,.12);
+1px solid rgba(185,140,255,.12);
 
 box-shadow:
-0 0 50px rgba(160,60,255,.15);
+0 0 50px rgba(150,80,255,.15);
 
 }
 
@@ -74,29 +76,33 @@ margin-bottom:30px;
 
 h1{
 
-font-size:3.6rem;
+font-family:'Cinzel',serif;
 
-letter-spacing:7px;
+font-size:4rem;
+
+font-weight:800;
+
+letter-spacing:10px;
 
 margin-bottom:25px;
 
-color:#ffffff;
+color:white;
 
 text-shadow:
-0 0 18px rgba(200,120,255,.5);
+0 0 20px rgba(210,140,255,.5);
 
 }
 
 
-/* INTRO */
+/* INTRO BOX */
 
 .intro{
 
 padding:18px;
 
-line-height:1.7;
+line-height:1.8;
 
-border-radius:16px;
+border-radius:18px;
 
 margin-bottom:25px;
 
@@ -104,15 +110,17 @@ background:
 rgba(255,255,255,.03);
 
 border:
-1px solid rgba(180,120,255,.1);
+1px solid rgba(185,140,255,.08);
 
 box-shadow:
-inset 0 0 15px rgba(255,255,255,.02);
+inset 0 0 20px rgba(255,255,255,.02);
+
+color:#ddd7f6;
 
 }
 
 
-/* CARDS */
+/* SOCIALS */
 
 .socials{
 
@@ -124,6 +132,8 @@ flex-wrap:wrap;
 
 }
 
+
+/* CARDS */
 
 .card{
 
@@ -141,12 +151,45 @@ background:
 rgba(255,255,255,.03);
 
 border:
-1px solid rgba(180,120,255,.1);
+1px solid rgba(185,140,255,.08);
 
 transition:.35s;
 
+overflow:hidden;
+
+position:relative;
+
 }
 
+.card::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.04),
+transparent
+);
+
+transform:translateX(-100%);
+
+transition:.6s;
+}
+
+.card:hover::before{
+
+transform:translateX(100%);
+}
 
 .card:hover{
 
@@ -154,21 +197,25 @@ transform:
 translateY(-6px);
 
 border-color:
-rgba(210,140,255,.4);
+rgba(220,180,255,.25);
 
 box-shadow:
-0 0 30px rgba(170,70,255,.15);
+0 0 25px rgba(160,80,255,.15);
 
 }
 
+
+/* ROBLOX HOVER */
 
 .roblox-card:hover{
 
 box-shadow:
-0 0 25px rgba(255,60,150,.25);
+0 0 25px rgba(255,80,150,.25);
 
 }
 
+
+/* SERVER HOVER */
 
 .server-card:hover{
 
@@ -190,16 +237,15 @@ gap:8px;
 
 margin-bottom:15px;
 
-font-size:.8rem;
+font-size:.75rem;
 
-letter-spacing:2px;
+letter-spacing:3px;
 
 text-transform:uppercase;
 
-color:#d5a5ff;
+color:#d9b2ff;
 
 }
-
 
 .user{
 
@@ -209,10 +255,12 @@ align-items:center;
 
 gap:10px;
 
+font-size:.95rem;
+
 }
 
 
-/* DOTS */
+/* CIRCLES */
 
 .circle{
 
@@ -225,35 +273,33 @@ border-radius:50%;
 
 .blue{
 
-background:#7a84ff;
+background:#7f8cff;
 
 box-shadow:
-0 0 10px #7a84ff;
+0 0 12px #7f8cff;
 
 }
-
 
 .red{
 
-background:#ff5c92;
+background:#ff5f95;
 
 box-shadow:
-0 0 10px #ff5c92;
+0 0 12px #ff5f95;
 
 }
-
 
 .purple{
 
-background:#c000ff;
+background:#cb38ff;
 
 box-shadow:
-0 0 12px #c000ff;
+0 0 12px #cb38ff;
 
 }
 
 
-/* AVATAR */
+/* ROBLOX AVATAR */
 
 .avatar{
 
@@ -268,7 +314,7 @@ border:
 }
 
 
-/* PROFILE */
+/* RIGHT PROFILE */
 
 .profile{
 
@@ -276,16 +322,15 @@ height:280px;
 
 overflow:hidden;
 
-border-radius:20px;
+border-radius:22px;
 
 border:
-1px solid rgba(180,120,255,.12);
+1px solid rgba(185,140,255,.12);
 
 box-shadow:
-0 0 25px rgba(170,80,255,.1);
+0 0 30px rgba(160,80,255,.1);
 
 }
-
 
 .profile img{
 
@@ -298,29 +343,28 @@ transition:.5s;
 
 }
 
-
 .profile:hover img{
 
-transform:scale(1.04);
+transform:scale(1.05);
 
 }
 
 
-/* GIF SECTION */
+/* AIZEN SECTION */
 
 .gif-section{
 
 margin-top:25px;
 
-padding:18px;
+padding:15px;
 
-border-radius:20px;
+border-radius:22px;
 
 background:
 rgba(255,255,255,.03);
 
 border:
-1px solid rgba(180,120,255,.1);
+1px solid rgba(185,140,255,.08);
 
 display:flex;
 
@@ -330,7 +374,6 @@ overflow:hidden;
 
 }
 
-
 .aizen-gif{
 
 width:100%;
@@ -339,12 +382,11 @@ max-width:900px;
 
 height:auto;
 
-border-radius:15px;
+border-radius:18px;
 
 transition:.4s;
 
 }
-
 
 .aizen-gif:hover{
 
@@ -382,7 +424,9 @@ margin:auto;
 
 h1{
 
-font-size:2.7rem;
+font-size:2.8rem;
+
+letter-spacing:6px;
 
 }
 

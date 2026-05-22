@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,21 +14,67 @@
 
 </head>
 
+
 <body>
 
-<audio id="bg-music" loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
+<!-- MUSIC PLAYER -->
+
+<audio id="bg-music"></audio>
 
 <script>
 
+const music = document.getElementById("bg-music");
+
+const playlist = [
+
+"music1.mp3",
+"music2.mp3",
+"music3.mp3",
+"music4.mp3",
+"music5.mp3"
+
+];
+
+let currentSong = 0;
+
+
+/* Load first song */
+
+music.src = playlist[currentSong];
+
+
+/* Browser requires click before audio */
+
 window.addEventListener("click",()=>{
 
-document.getElementById("bg-music").play();
+music.play();
 
 },{once:true});
 
+
+/* Switch songs automatically */
+
+music.addEventListener("ended",()=>{
+
+currentSong++;
+
+
+/* Restart playlist after last song */
+
+if(currentSong >= playlist.length){
+
+currentSong = 0;
+
+}
+
+music.src = playlist[currentSong];
+
+music.play();
+
+});
+
 </script>
+
 
 
 <div class="container">
@@ -37,11 +85,13 @@ document.getElementById("bg-music").play();
 
 <h1>welcome</h1>
 
+
 <div class="intro">
 
 You clicking my website was all according to plan.
 
 </div>
+
 
 
 <div class="socials">
@@ -65,6 +115,7 @@ FullyShatteredComet
 </div>
 
 </div>
+
 
 
 <!-- Roblox -->
@@ -95,6 +146,7 @@ okula9990
 </a>
 
 
+
 <!-- Server -->
 
 <a
@@ -123,24 +175,32 @@ Join my expose server
 </div>
 
 
+
+<!-- RIGHT SIDE GIF -->
+
 <div class="profile">
 
-<img src="download.gif">
+<img src="download.gif" alt="Profile GIF">
 
 </div>
 
 </div>
 
+
+
+<!-- BOTTOM GIF -->
 
 <div class="gif-section">
 
 <img
 src="aizen.gif"
-class="aizen-gif">
+class="aizen-gif"
+alt="Aizen GIF">
 
 </div>
 
 </div>
 
 </body>
+
 </html>

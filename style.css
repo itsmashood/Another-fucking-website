@@ -1,11 +1,11 @@
-/ curosr part of it /
+/* Custom cursor */
 
-*{
+html, body,
+a, img, div, p, h1, h2 {
 
-    cursor:url("cursor.png") 16 16, auto;
+    cursor:url("cursor.png") 0 0, auto;
 
 }
-
 
 body{
 
@@ -34,32 +34,17 @@ body{
 
 }
 
-
-/* Ambient movement */
-
 @keyframes ambientFade{
 
-    0%{
-        background-position:0% 50%;
-    }
-
-    50%{
-        background-position:100% 50%;
-    }
-
-    100%{
-        background-position:0% 50%;
-    }
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 
 }
-
-
-/* Left manga panel */
 
 .manga-left{
 
     position:fixed;
-
     left:0;
     top:0;
 
@@ -84,13 +69,9 @@ body{
 
 }
 
-
-/* Right manga panel */
-
 .manga-right{
 
     position:fixed;
-
     right:0;
     top:0;
 
@@ -115,81 +96,51 @@ body{
 
 }
 
-
-/* Main title */
-
 .title{
 
     text-align:center;
-
     font-size:60px;
-
     margin-top:40px;
-
-    font-weight:normal;
 
     color:white;
 
-    text-shadow:
-    0px 0px 10px rgba(255,255,255,.3);
-
     position:relative;
-
     z-index:5;
 
 }
-
-
-/* Main content */
 
 .container{
 
     width:100%;
-
     display:flex;
-
     justify-content:center;
-
     margin-top:80px;
 
     position:relative;
-
     z-index:5;
 
 }
 
-
 .about-box{
 
     width:400px;
-
     color:white;
 
-    text-shadow:
-    0px 0px 5px rgba(255,255,255,.25);
-
 }
-
 
 .about-box h2{
 
     font-size:36px;
-
     margin-bottom:35px;
 
 }
 
-
 .about-box p{
 
     font-size:20px;
-
     line-height:1.8;
 
 }
-
-
-/* Bottom icons */
 
 .social-icons{
 
@@ -209,11 +160,9 @@ body{
 
 }
 
-
 .social-icons img{
 
     width:35px;
-
     height:35px;
 
     object-fit:contain;
@@ -222,15 +171,13 @@ body{
 
 }
 
-
 .social-icons img:hover{
 
     transform:scale(1.2);
 
 }
 
-
-/* Cursor particles */
+/* Particles */
 
 .particle{
 
@@ -247,8 +194,7 @@ body{
 
     box-shadow:
     0 0 8px white,
-    0 0 15px white,
-    0 0 25px white;
+    0 0 15px white;
 
     animation:particleFade .8s linear forwards;
 
@@ -256,29 +202,19 @@ body{
 
 }
 
-
-/* Particle animation */
-
 @keyframes particleFade{
 
-    0%{
+    from{
 
         opacity:1;
-
-        transform:
-        translate(-50%,-50%)
-        scale(1);
+        transform:translate(-50%,-50%) scale(1);
 
     }
 
-    100%{
+    to{
 
         opacity:0;
-
-        transform:
-        translate(-50%,-50%)
-        translateY(-20px)
-        scale(0);
+        transform:translate(-50%,-70%) scale(0);
 
     }
 

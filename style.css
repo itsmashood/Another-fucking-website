@@ -1,3 +1,12 @@
+/* Custom cursor */
+
+*{
+
+    cursor:url("cursor.png") 16 16, auto;
+
+}
+
+
 body{
 
     margin:0;
@@ -61,7 +70,6 @@ body{
 
     z-index:1;
 
-    /* fades toward center */
     -webkit-mask-image:linear-gradient(
         to right,
         black 65%,
@@ -93,7 +101,6 @@ body{
 
     z-index:1;
 
-    /* fades toward center */
     -webkit-mask-image:linear-gradient(
         to left,
         black 65%,

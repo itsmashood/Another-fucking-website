@@ -1,443 +1,85 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
 body{
-
-font-family:'Cormorant Garamond',serif;
-
-background:
-linear-gradient(
-135deg,
-#05030b 0%,
-#090512 25%,
-#160d27 60%,
-#2b1848 100%
-);
-
-color:#f8f5ff;
-
-min-height:100vh;
-
-padding:25px;
-
-overflow-x:hidden;
-
+    margin:0;
+    background:#d9d9d9;
+    font-family:'IBM Plex Mono', monospace;
 }
-
-
-/* MAIN CONTAINER */
 
 .container{
 
-max-width:1050px;
+    width:80%;
+    max-width:1000px;
 
-margin:auto;
+    margin:auto;
+    margin-top:180px;
 
-padding:35px;
+    display:flex;
 
-border-radius:30px;
+    justify-content:center;
+    gap:100px;
 
-background:
-rgba(10,8,18,.86);
-
-backdrop-filter:blur(18px);
-
-border:
-1px solid rgba(180,120,255,.08);
-
-box-shadow:
-0 0 60px rgba(130,50,255,.15);
-
+    align-items:flex-start;
 }
 
+.left{
 
-/* HERO */
-
-.hero{
-
-display:grid;
-
-grid-template-columns:
-1fr 280px;
-
-gap:35px;
-
-align-items:center;
-
-margin-bottom:30px;
-
+    width:400px;
+    text-align:center;
 }
 
+.social-icons{
 
-/* TITLE */
+    display:flex;
+    justify-content:center;
+    gap:15px;
 
-h1{
-
-font-family:'UnifrakturCook',cursive;
-
-font-size:4.8rem;
-
-font-weight:700;
-
-letter-spacing:3px;
-
-margin-bottom:20px;
-
-color:white;
-
-text-shadow:
-0 0 25px rgba(200,130,255,.35);
-
+    margin-bottom:20px;
 }
 
+.social-icons img{
 
-/* INTRO */
-
-.intro{
-
-padding:18px;
-
-line-height:1.7;
-
-font-size:1.1rem;
-
-margin-bottom:25px;
-
-border-radius:18px;
-
-background:
-rgba(255,255,255,.03);
-
-border:
-1px solid rgba(180,120,255,.08);
-
-color:#e4dbff;
-
+    width:30px;
 }
 
+.tags{
 
-/* SOCIALS */
-
-.socials{
-
-display:flex;
-
-gap:15px;
-
-flex-wrap:wrap;
-
-margin-top:20px;
-
+    font-style:italic;
+    font-weight:bold;
 }
 
+.badges{
 
-/* CARDS */
+    margin-top:25px;
 
-.card{
+    display:grid;
 
-width:200px;
+    grid-template-columns:repeat(3,1fr);
 
-padding:18px;
-
-border-radius:18px;
-
-text-decoration:none;
-
-color:white;
-
-background:
-rgba(255,255,255,.03);
-
-border:
-1px solid rgba(180,120,255,.08);
-
-position:relative;
-
-overflow:hidden;
-
-transition:.35s;
-
+    gap:5px;
 }
 
-.card::before{
+.badges img{
 
-content:"";
-
-position:absolute;
-
-top:0;
-left:-100%;
-
-width:100%;
-height:100%;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.05),
-transparent
-);
-
-transition:.6s;
-
+    width:100%;
 }
 
-.card:hover::before{
+.right{
 
-left:100%;
-
+    width:400px;
 }
 
-.card:hover{
+.right h1{
 
-transform:translateY(-6px);
-
-border-color:
-rgba(200,150,255,.18);
-
-box-shadow:
-0 0 30px rgba(180,80,255,.15);
-
+    font-size:40px;
+    margin-bottom:30px;
 }
 
+.right p{
 
-.roblox-card:hover{
-
-box-shadow:
-0 0 20px rgba(255,70,150,.20);
-
+    line-height:1.8;
+    font-size:22px;
 }
 
-.server-card:hover{
+b{
 
-box-shadow:
-0 0 20px rgba(180,0,255,.25);
-
-}
-
-
-/* LABELS */
-
-.label{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-margin-bottom:14px;
-
-font-size:.75rem;
-
-letter-spacing:3px;
-
-text-transform:uppercase;
-
-color:#d7b0ff;
-
-}
-
-
-.user{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-font-size:1rem;
-
-}
-
-
-/* CIRCLES */
-
-.circle{
-
-width:11px;
-height:11px;
-
-border-radius:50%;
-
-}
-
-.blue{
-
-background:#7b8eff;
-
-box-shadow:
-0 0 10px #7b8eff;
-
-}
-
-.red{
-
-background:#ff5d91;
-
-box-shadow:
-0 0 10px #ff5d91;
-
-}
-
-.purple{
-
-background:#cb2fff;
-
-box-shadow:
-0 0 10px #cb2fff;
-
-}
-
-
-/* AVATAR */
-
-.avatar{
-
-width:28px;
-height:28px;
-
-border-radius:50%;
-
-border:
-2px solid rgba(255,255,255,.15);
-
-}
-
-
-/* PROFILE */
-
-.profile{
-
-height:300px;
-
-overflow:hidden;
-
-border-radius:22px;
-
-border:
-1px solid rgba(180,120,255,.08);
-
-box-shadow:
-0 0 30px rgba(150,80,255,.12);
-
-}
-
-.profile img{
-
-width:100%;
-height:100%;
-
-object-fit:cover;
-
-transition:.4s;
-
-}
-
-.profile:hover img{
-
-transform:scale(1.04);
-
-}
-
-
-/* AIZEN GIF SECTION */
-
-.gif-section{
-
-margin-top:30px;
-
-height:520px;
-
-padding:15px;
-
-border-radius:22px;
-
-background:
-rgba(255,255,255,.03);
-
-border:
-1px solid rgba(180,120,255,.08);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-overflow:hidden;
-
-}
-
-
-/* BIGGER GIF */
-
-.aizen-gif{
-
-width:100%;
-
-height:100%;
-
-max-width:950px;
-
-object-fit:contain;
-
-border-radius:18px;
-
-transition:.4s;
-
-}
-
-
-.aizen-gif:hover{
-
-transform:scale(1.02);
-
-}
-
-
-/* MOBILE */
-
-@media(max-width:850px){
-
-.hero{
-
-grid-template-columns:1fr;
-
-text-align:center;
-
-}
-
-.socials{
-
-justify-content:center;
-
-}
-
-.profile{
-
-width:250px;
-height:250px;
-
-margin:auto;
-
-}
-
-h1{
-
-font-size:3rem;
-
-}
-
-.gif-section{
-
-height:300px;
-
-}
-
+    font-weight:700;
 }

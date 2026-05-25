@@ -11,12 +11,11 @@ body{
 
     background:linear-gradient(
         -45deg,
-        #000000,
-        #121212,
-        #2c2c2c,
-        #6b6b6b,
-        #d8d8d8,
-        #555555,
+        #050505,
+        #151515,
+        #404040,
+        #757575,
+        #4a4a4a,
         #111111
     );
 
@@ -62,6 +61,19 @@ body{
 
     z-index:1;
 
+    /* fades toward center */
+    -webkit-mask-image:linear-gradient(
+        to right,
+        black 65%,
+        transparent 100%
+    );
+
+    mask-image:linear-gradient(
+        to right,
+        black 65%,
+        transparent 100%
+    );
+
 }
 
 
@@ -81,10 +93,23 @@ body{
 
     z-index:1;
 
+    /* fades toward center */
+    -webkit-mask-image:linear-gradient(
+        to left,
+        black 65%,
+        transparent 100%
+    );
+
+    mask-image:linear-gradient(
+        to left,
+        black 65%,
+        transparent 100%
+    );
+
 }
 
 
-/* About Me title */
+/* Main title */
 
 .title{
 
@@ -127,8 +152,6 @@ body{
 }
 
 
-/* About box */
-
 .about-box{
 
     width:400px;
@@ -136,7 +159,7 @@ body{
     color:white;
 
     text-shadow:
-    0px 0px 5px rgba(255,255,255,.2);
+    0px 0px 5px rgba(255,255,255,.25);
 
 }
 

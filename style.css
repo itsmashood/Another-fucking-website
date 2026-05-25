@@ -7,96 +7,93 @@ body{
 
     font-family:'IBM Plex Mono', monospace;
 
+    min-height:100vh;
 }
 
 
-.container{
+/* Top title */
 
-    width:80%;
-    max-width:1000px;
-
-    margin:auto;
-    margin-top:150px;
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:100px;
-
-}
-
-
-.left{
-
-    width:300px;
+.title{
 
     text-align:center;
 
+    font-size:60px;
+
+    margin-top:40px;
+
+    font-weight:normal;
 }
 
 
-.social-icons{
+/* Main area */
+
+.container{
+
+    width:100%;
 
     display:flex;
 
     justify-content:center;
 
-    gap:25px;
+    margin-top:80px;
+}
 
-    margin-bottom:25px;
 
+/* About section */
+
+.about-box{
+
+    width:400px;
+}
+
+
+.about-box h2{
+
+    font-size:36px;
+
+    margin-bottom:35px;
+}
+
+
+.about-box p{
+
+    font-size:20px;
+
+    line-height:1.8;
+}
+
+
+/* Bottom icons */
+
+.social-icons{
+
+    position:fixed;
+
+    bottom:80px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    gap:40px;
 }
 
 
 .social-icons img{
 
-    width:30px;
+    width:35px;
 
-    height:30px;
+    height:35px;
 
     object-fit:contain;
 
-    transition:0.3s;
+    transition:.3s;
 }
 
 
 .social-icons img:hover{
 
     transform:scale(1.2);
-
-}
-
-
-.tags{
-
-    font-style:italic;
-
-    font-size:14px;
-
-}
-
-
-.right{
-
-    width:400px;
-
-}
-
-
-.right h1{
-
-    font-size:36px;
-
-    margin-bottom:30px;
-
-}
-
-
-.right p{
-
-    font-size:20px;
-
-    line-height:1.8;
-
 }

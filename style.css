@@ -1,12 +1,14 @@
 /* Remove browser default spacing */
 
 body{
+
     margin:0;
     padding:0;
 
     background:#d9d9d9;
 
     font-family:'IBM Plex Mono', monospace;
+
 }
 
 
@@ -25,6 +27,7 @@ body{
     justify-content:center;
 
     gap:100px;
+
 }
 
 
@@ -35,8 +38,11 @@ body{
     width:300px;
 
     text-align:center;
+
 }
 
+
+/* Social icons */
 
 .social-icons{
 
@@ -44,33 +50,41 @@ body{
 
     justify-content:center;
 
-    gap:20px;
+    gap:25px;
 
     margin-bottom:25px;
+
 }
 
 
-.social-icons a{
+.social-icons img{
 
-    color:black;
+    width:30px;
 
-    text-decoration:none;
+    height:30px;
 
-    font-weight:bold;
+    object-fit:contain;
+
+    transition:0.3s;
+
 }
 
 
-.social-icons a:hover{
+.social-icons img:hover{
 
-    text-decoration:underline;
+    transform:scale(1.2);
+
 }
 
+
+/* Tags */
 
 .tags{
 
     font-style:italic;
 
     font-size:14px;
+
 }
 
 
@@ -79,6 +93,7 @@ body{
 .right{
 
     width:400px;
+
 }
 
 
@@ -87,6 +102,7 @@ body{
     font-size:36px;
 
     margin-bottom:30px;
+
 }
 
 
@@ -95,4 +111,5 @@ body{
     font-size:20px;
 
     line-height:1.8;
+
 }

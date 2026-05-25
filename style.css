@@ -1,11 +1,12 @@
 /* Custom cursor */
 
 html, body,
-a, img, div, p, h1, h2 {
+a, img, div, p, h1, h2{
 
     cursor:url("cursor.png") 0 0, auto;
 
 }
+
 
 body{
 
@@ -34,17 +35,32 @@ body{
 
 }
 
+
+/* Ambient movement */
+
 @keyframes ambientFade{
 
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
 
 }
+
+
+/* Left manga panel */
 
 .manga-left{
 
     position:fixed;
+
     left:0;
     top:0;
 
@@ -69,9 +85,13 @@ body{
 
 }
 
+
+/* Right manga panel */
+
 .manga-right{
 
     position:fixed;
+
     right:0;
     top:0;
 
@@ -96,51 +116,71 @@ body{
 
 }
 
+
+/* Main title */
+
 .title{
 
     text-align:center;
+
     font-size:60px;
+
     margin-top:40px;
 
     color:white;
 
     position:relative;
+
     z-index:5;
 
 }
+
 
 .container{
 
     width:100%;
+
     display:flex;
+
     justify-content:center;
+
     margin-top:80px;
 
     position:relative;
+
     z-index:5;
 
 }
 
+
 .about-box{
 
     width:400px;
+
     color:white;
 
 }
 
+
 .about-box h2{
 
     font-size:36px;
+
     margin-bottom:35px;
 
 }
 
+
 .about-box p{
 
     font-size:20px;
+
     line-height:1.8;
 
 }
+
+
+/* Bottom icons */
 
 .social-icons{
 
@@ -160,9 +200,11 @@ body{
 
 }
 
+
 .social-icons img{
 
     width:35px;
+
     height:35px;
 
     object-fit:contain;
@@ -171,30 +213,34 @@ body{
 
 }
 
+
 .social-icons img:hover{
 
     transform:scale(1.2);
 
 }
 
-/* Particles */
+
+/* Dark cursor particles */
 
 .particle{
 
     position:absolute;
 
-    width:8px;
-    height:8px;
+    width:10px;
+    height:10px;
 
     border-radius:50%;
 
     pointer-events:none;
 
-    background:white;
+    background:#111111;
 
     box-shadow:
-    0 0 8px white,
-    0 0 15px white;
+        0 0 8px #000,
+        0 0 16px rgba(0,0,0,.9),
+        0 0 28px rgba(0,0,0,.7),
+        0 0 40px rgba(0,0,0,.5);
 
     animation:particleFade .8s linear forwards;
 
@@ -202,19 +248,26 @@ body{
 
 }
 
+
 @keyframes particleFade{
 
-    from{
+    0%{
 
         opacity:1;
-        transform:translate(-50%,-50%) scale(1);
+
+        transform:
+        translate(-50%,-50%)
+        scale(1);
 
     }
 
-    to{
+    100%{
 
         opacity:0;
-        transform:translate(-50%,-70%) scale(0);
+
+        transform:
+        translate(-50%,-70%)
+        scale(0);
 
     }
 

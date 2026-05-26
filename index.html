@@ -16,7 +16,9 @@
 
 <body>
 
-<!-- Background manga panels -->
+<div class="pixel-bg"></div>
+
+<!-- manga backgrounds -->
 <img src="1.jpg" class="manga-left">
 <img src="2.jpg" class="manga-right">
 
@@ -24,7 +26,8 @@
 
 <div class="container">
 
-    <!-- Left Misa Images -->
+    <!-- Left side Misa -->
+
     <div class="misa-column">
 
         <img src="misaamane.jpg" alt="Misa">
@@ -33,14 +36,15 @@
     </div>
 
 
-    <!-- About box -->
+    <!-- About -->
 
     <div class="about-box">
 
         <h2>about me</h2>
 
         <p>
-            Hey i'm mashood, 17 assigned male at birth. I love my girl bella.
+            Hey i'm mashood, 17 assigned male at birth.
+            I love my girl bella.
         </p>
 
         <p>
@@ -48,22 +52,24 @@
         </p>
 
         <p>
-            I own a expose file server which you can fiiind below! 
+            I own a expose file server which you can fiiind below!
             just click the discord icon :)
         </p>
 
         <p>
-            I have three socials which are roblox, discord and github.
+            I have three socials which are
+            roblox, discord and github.
         </p>
 
     </div>
 
 
-    <!-- Right Misa Image -->
+    <!-- Right side Misa -->
 
     <div class="misa-column">
 
         <img src="image4.jpg" alt="Misa">
+        <img src="misaamane3.jpg" alt="Misa">
 
     </div>
 
@@ -72,17 +78,17 @@
 
 <div class="social-icons">
 
-    <a href="https://github.com/itsmashood" target="_blank">
-        <img src="github.png" alt="GitHub">
-    </a>
+<a href="https://github.com/itsmashood" target="_blank">
+<img src="github.png">
+</a>
 
-    <a href="https://discord.gg/59BdrZxWgW" target="_blank">
-        <img src="discord.png" alt="Discord">
-    </a>
+<a href="https://discord.gg/59BdrZxWgW" target="_blank">
+<img src="discord.png">
+</a>
 
-    <a href="https://www.roblox.com/users/7536569678/profile" target="_blank">
-        <img src="roblox.png" alt="Roblox">
-    </a>
+<a href="https://www.roblox.com/users/7536569678/profile" target="_blank">
+<img src="roblox.png">
+</a>
 
 </div>
 
@@ -91,20 +97,20 @@
 
 document.addEventListener("mousemove",(e)=>{
 
-    const particle=document.createElement("div");
+const particle=document.createElement("div");
 
-    particle.className="particle";
+particle.className="particle";
 
-    particle.style.left=e.pageX+"px";
-    particle.style.top=e.pageY+"px";
+particle.style.left=e.pageX+"px";
+particle.style.top=e.pageY+"px";
 
-    document.body.appendChild(particle);
+document.body.appendChild(particle);
 
-    setTimeout(()=>{
+setTimeout(()=>{
 
-        particle.remove();
+particle.remove();
 
-    },800);
+},800);
 
 });
 

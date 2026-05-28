@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -126,116 +127,106 @@ roblox, discord and github.
 // Cursor particles
 // =====================
 
-document.addEventListener("mousemove",(e)=>{
+document.addEventListener("mousemove", (e) => {
 
-const particle=document.createElement("div");
+    const particle = document.createElement("div");
 
-particle.className="particle";
+    particle.className = "particle";
 
-particle.style.left=e.clientX+"px";
-particle.style.top=e.clientY+"px";
+    particle.style.left = e.clientX + "px";
+    particle.style.top = e.clientY + "px";
 
-document.body.appendChild(particle);
+    document.body.appendChild(particle);
 
-setTimeout(()=>{
+    setTimeout(() => {
 
-particle.remove();
+        particle.remove();
 
-},600);
+    }, 600);
 
 });
-
 
 
 // =====================
 // Music system
 // =====================
 
-const audio = new Audio();
+const songs = [
+    "music1.mp3",
+    "music2.mp3",
+    "music3.mp3",
+    "music4.mp3",
+    "music5.mp3",
+    "music6.mp3",
+    "music7.mp3",
+    "music8.mp3",
+    "music9.mp3",
+    "music10.mp3"
+];
 
-let currentTrack = 1;
-const maxTracks = 10;
+let currentSong = 0;
+
+const audio = new Audio();
 
 audio.volume = 0.5;
 
 
-// Load track
+// Play song
+function playSong() {
 
-function loadTrack(trackNum){
+    audio.src = songs[currentSong];
 
-audio.src=`music${trackNum}.mp3`;
+    audio.play().catch(() => {
 
-audio.load();
+        // Browser autoplay block fix
+        document.addEventListener("click", () => {
 
-attemptPlay();
+            audio.play();
 
-}
+        }, { once: true });
 
-
-// Attempt autoplay immediately
-
-function attemptPlay(){
-
-audio.play().catch(()=>{
-
-// Browser blocks autoplay
-
-document.addEventListener(
-"click",
-()=>{
-
-audio.play();
-
-},
-{once:true}
-
-);
-
-});
+    });
 
 }
 
 
-// Go to next track
+// Next song
+function nextSong() {
 
-function nextTrack(){
+    currentSong++;
 
-currentTrack++;
+    // Loop back to first song
+    if (currentSong >= songs.length) {
 
-if(currentTrack>maxTracks){
+        currentSong = 0;
 
-currentTrack=1;
+    }
+
+    playSong();
 
 }
 
-loadTrack(currentTrack);
 
-}
+// Song ended
+audio.addEventListener("ended", () => {
 
-
-// Missing file → skip
-
-audio.addEventListener("error",()=>{
-
-nextTrack();
+    nextSong();
 
 });
 
 
-// Song ended → next
+// Missing/corrupt file
+audio.addEventListener("error", () => {
 
-audio.addEventListener("ended",()=>{
-
-nextTrack();
+    nextSong();
 
 });
 
 
-// Start when page fully loads
+// Start music when page loads
+window.addEventListener("load", () => {
 
-window.addEventListener("load",()=>{
-
-loadTrack(currentTrack);
+    playSong();
 
 });
 
@@ -243,3 +234,4 @@ loadTrack(currentTrack);
 
 </body>
 </html>
+```

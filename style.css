@@ -1,3 +1,4 @@
+```css
 /* made by mashood */
 
 html,
@@ -36,7 +37,9 @@ overflow-x:hidden;
 
 font-family:'IBM Plex Mono', monospace;
 
-background:#000000;
+/* GIF BACKGROUND */
+background:
+url("background.gif") center center / cover no-repeat fixed;
 
 color:white;
 
@@ -336,7 +339,7 @@ drop-shadow(
 }
 
 
-/* scroll indicator (NO MOVEMENT) */
+/* scroll indicator */
 
 .scroll-down{
 
@@ -543,3 +546,4 @@ width:90%;
 }
 
 }
+```

@@ -205,22 +205,29 @@ box-shadow:
 0 0 30px rgba(255,120,170,.9);
 }
 
+/* ROBLOX IMAGE FIX */
+
 .social-image {
-width: 42px;
-height: 42px;
-object-fit: contain;
+width: 68px;
+height: 68px;
+
 display: block;
 
-/* remove these filters if your roblox.png is already white */
-filter:
-brightness(0)
-invert(1);
+object-fit: contain;
+object-position: center;
 
 transition: .3s;
+
+transform: scale(1.45);
+
+filter:
+brightness(0)
+invert(1)
+drop-shadow(0 0 8px rgba(255,255,255,.35));
 }
 
 .social-btn:hover .social-image {
-transform: scale(1.08);
+transform: scale(1.60);
 }
 
 /* SCROLL */
@@ -350,8 +357,8 @@ font-size: 30px;
 }
 
 .social-image {
-width: 30px;
-height: 30px;
+width: 50px;
+height: 50px;
+transform: scale(1.35);
 }
-
 }

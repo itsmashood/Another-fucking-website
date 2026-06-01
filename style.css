@@ -17,40 +17,30 @@ body {
 min-height: 100vh;
 overflow-x: hidden;
 font-family: 'IBM Plex Mono', monospace;
-background: #000;
 color: white;
+
+background:
+linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
+url("background.gif");
+
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: fixed;
 }
 
-/* background gif + grid */
+/* grid overlay */
 .pixel-bg {
 position: fixed;
 inset: 0;
 pointer-events: none;
-z-index: -1;
+z-index: 0;
 
 background-image:
 linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
-linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
-url("background.gif");
+linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
 
-background-size:
-18px 18px,
-18px 18px,
-cover,
-cover;
-
-background-position:
-0 0,
-0 0,
-center center,
-center center;
-
-background-repeat:
-repeat,
-repeat,
-no-repeat,
-no-repeat;
+background-size: 18px 18px;
 }
 
 /* title */

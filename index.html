@@ -10,7 +10,13 @@
 
 <link rel="icon" type="image/png" href="misaamane.png">
 
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <link rel="stylesheet" href="style.css">
 
@@ -20,51 +26,74 @@
 
 <div class="pixel-bg"></div>
 
-<h1 class="title">Welcome to my page!</h1>
+<h1 class="title">WELCOME TO MY PAGE!</h1>
+
+<div class="subtitle">
+✦ ようこそ ✦
+</div>
 
 <div class="container">
 
 <div class="about-box">
 
-<h2>about me</h2>
+<h2>✦ ABOUT ME ✦</h2>
 
+<div class="about-item">
+<i class="fa-regular fa-user"></i>
 <p>Hey i'm mashood, 17 years old.</p>
+</div>
 
+<div class="about-item">
+<i class="fa-regular fa-star"></i>
 <p>I try to bring good in a world filled with evil.</p>
+</div>
 
-<p>I own an expose file server which you can find below — just click the Discord icon :)</p>
+<div class="about-item">
+<i class="fa-solid fa-server"></i>
+<p>
+I own an expose file server which you can find below —
+just click the Discord icon :)
+</p>
+</div>
 
+<div class="about-item">
+<i class="fa-regular fa-heart"></i>
 <p>I have three socials: Roblox, Discord and GitHub.</p>
-
 </div>
 
 </div>
 
-<!-- SOCIALS -->
+</div>
+
+<div class="divider"></div>
+
 <div class="social-icons">
 
-<a href="https://github.com/itsmashood" target="_blank">
-<img src="github.png">
+<a href="https://github.com/itsmashood" target="_blank" class="social-btn">
+<i class="fab fa-github"></i>
 </a>
 
-<a href="https://discord.gg/59BdrZxWgW" target="_blank">
-<img src="discord.png">
+<a href="https://discord.gg/59BdrZxWgW" target="_blank" class="social-btn">
+<i class="fab fa-discord"></i>
 </a>
 
-<a href="https://www.roblox.com/users/7536569678/profile" target="_blank">
-<img src="roblox.png">
+<a href="https://www.roblox.com/users/7536569678/profile" target="_blank" class="social-btn">
+<i class="fas fa-cube"></i>
 </a>
 
 </div>
 
-<div class="scroll-down">↓ scroll down</div>
+<div class="heart-divider">♥</div>
 
-<!-- CREDITS -->
+<div class="scroll-down">
+↓ SCROLL DOWN ↓
+</div>
+
 <section class="credits-section">
 
 <div class="credits-box">
 
-<h2>credits</h2>
+<h2>✦ CREDITS ✦</h2>
 
 <p>one full line</p>
 <p>two full line</p>
@@ -81,39 +110,48 @@
 // cursor particles
 document.addEventListener("mousemove", (e) => {
 
-    const particle = document.createElement("div");
-    particle.className = "particle";
+const particle = document.createElement("div");
+particle.className = "particle";
 
-    particle.style.left = e.clientX + "px";
-    particle.style.top = e.clientY + "px";
+particle.style.left = e.clientX + "px";
+particle.style.top = e.clientY + "px";
 
-    document.body.appendChild(particle);
+document.body.appendChild(particle);
 
-    setTimeout(() => particle.remove(), 600);
+setTimeout(() => particle.remove(), 600);
 
 });
 
 // music system
 const songs = [
-    "music1.mp3","music2.mp3","music3.mp3","music4.mp3","music5.mp3",
-    "music6.mp3","music7.mp3","music8.mp3","music9.mp3","music10.mp3"
+"music1.mp3","music2.mp3","music3.mp3","music4.mp3","music5.mp3",
+"music6.mp3","music7.mp3","music8.mp3","music9.mp3","music10.mp3"
 ];
 
 let currentSong = 0;
+
 const audio = new Audio();
 audio.volume = 0.5;
 
 function playSong() {
-    audio.src = songs[currentSong];
-    audio.play().catch(() => {
-        document.addEventListener("click", () => audio.play(), { once: true });
-    });
+
+audio.src = songs[currentSong];
+
+audio.play().catch(() => {
+document.addEventListener("click", () => audio.play(), { once: true });
+});
+
 }
 
 function nextSong() {
-    currentSong++;
-    if (currentSong >= songs.length) currentSong = 0;
-    playSong();
+
+currentSong++;
+
+if (currentSong >= songs.length)
+currentSong = 0;
+
+playSong();
+
 }
 
 audio.addEventListener("ended", nextSong);

@@ -33,27 +33,6 @@ linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
 background-size: 18px 18px;
 }
 
-/* manga sides */
-.manga-left, .manga-right {
-position: fixed;
-top: 0;
-width: 24vw;
-height: 100vh;
-opacity: .45;
-object-fit: fill;
-z-index: 1;
-}
-
-.manga-left {
-left: 0;
-mask-image: linear-gradient(to right, black 65%, transparent);
-}
-
-.manga-right {
-right: 0;
-mask-image: linear-gradient(to left, black 65%, transparent);
-}
-
 /* title */
 .title {
 position: relative;
@@ -94,7 +73,7 @@ box-shadow: 0 0 8px rgba(255,255,255,.1);
 box-shadow: 0 0 15px white, 0 0 35px rgba(255,255,255,.3);
 }
 
-/* 🔥 BIG GIF */
+/* BIG GIF */
 .gif-large {
 width: 520px;
 border-radius: 12px;
@@ -129,6 +108,7 @@ display: flex;
 justify-content: center;
 gap: 40px;
 margin-top: 60px;
+position: relative;
 z-index: 5;
 }
 
@@ -223,10 +203,6 @@ width: 120px;
 width: 300px;
 }
 
-.manga-left, .manga-right {
-display: none;
-}
-
 .title {
 font-size: 40px;
 }
@@ -234,4 +210,5 @@ font-size: 40px;
 .about-box {
 width: 90%;
 }
+
 }

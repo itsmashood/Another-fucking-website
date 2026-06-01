@@ -209,7 +209,9 @@ box-shadow:
 width: 42px;
 height: 42px;
 object-fit: contain;
+display: block;
 
+/* remove these filters if your roblox.png is already white */
 filter:
 brightness(0)
 invert(1);

@@ -22,3 +22,47 @@ h1{text-align:center;font-family:Cinzel,serif;font-size:90px;letter-spacing:12px
 .pdf-list{display:flex;flex-direction:column;gap:15px}
 .pdf-list a{padding:16px;border:1px solid #333;color:#aaa;text-decoration:none;background:rgba(255,255,255,.02);transition:.3s}
 .pdf-list a:hover{color:#fff;border-color:#777;background:rgba(255,255,255,.08)}
+
+
+.music-btn {
+position: fixed;
+top: 25px;
+right: 25px;
+z-index: 10;
+background: rgba(10,10,10,.8);
+border: 1px solid #444;
+color: #aaa;
+padding: 12px 18px;
+font-family: 'IBM Plex Mono', monospace;
+cursor: pointer;
+transition: .3s;
+}
+
+.music-btn:hover {
+color: white;
+border-color: #777;
+}
+
+section {
+margin-top: 70px;
+}
+
+.documents, .projects {
+background: rgba(5,5,8,.55);
+border: 1px solid rgba(255,255,255,.08);
+padding: 40px;
+border-radius: 6px;
+}
+
+h2 {
+font-family: Cinzel, serif;
+letter-spacing: 5px;
+text-align: center;
+color: #ddd;
+margin-bottom: 20px;
+}
+
+@media(max-width:700px){
+h1 {font-size:50px;letter-spacing:5px;}
+.message {padding:25px;}
+}

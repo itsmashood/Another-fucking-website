@@ -9,6 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<audio id="bgMusic" loop>
+    <source src="music1.mp3" type="audio/mpeg">
+</audio>
+<button id="musicToggle" class="music-btn">▶ Play soundtrack</button>
 <main class="page">
     <div class="fog"></div>
     <h1>I quit</h1>
@@ -62,5 +66,19 @@
     </section>
 
 </main>
+<script>
+const music = document.getElementById("bgMusic");
+const button = document.getElementById("musicToggle");
+
+button.addEventListener("click", () => {
+    if (music.paused) {
+        music.play();
+        button.textContent = "⏸ Pause soundtrack";
+    } else {
+        music.pause();
+        button.textContent = "▶ Play soundtrack";
+    }
+});
+</script>
 </body>
 </html>

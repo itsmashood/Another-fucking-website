@@ -66,3 +66,33 @@ margin-bottom: 20px;
 h1 {font-size:50px;letter-spacing:5px;}
 .message {padding:25px;}
 }
+
+.socials{
+margin-top:60px;
+background:rgba(5,5,8,.75);
+border:1px solid rgba(255,255,255,.12);
+padding:40px;
+border-radius:4px;
+box-shadow:0 0 60px rgba(0,0,0,.8);
+text-align:center;
+}
+.socials h2,.documents h2,.projects h2{font-family:Cinzel,serif;letter-spacing:4px;color:#eee;margin-bottom:15px}
+.social-list{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:25px}
+.social-list a{
+display:flex;
+align-items:center;
+gap:10px;
+padding:14px 24px;
+border:1px solid #333;
+background:rgba(255,255,255,.03);
+color:#bbb;
+text-decoration:none;
+transition:.3s;
+}
+.social-list a:hover{
+color:white;
+border-color:#777;
+background:rgba(255,255,255,.08);
+}
+.social-list img{width:28px;height:28px;object-fit:contain}
+.social-note{margin-top:25px;color:#888}

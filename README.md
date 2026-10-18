@@ -1,45 +1,50 @@
-# Mashood — 3D personal website
+# Mashood — personal website
 
-## Open it
+Extract the ZIP and open `Mashood-Personal/index.html`. No installation or build step is required. To host it, upload the contents of that folder to your static website host.
 
-1. Extract the entire ZIP.
-2. Open `Mashood-3D/index.html` in a modern desktop or mobile browser.
+## Changes
 
-No installation, build step, API key, CDN, internet connection or development server is needed to display the site. External project/social links naturally need an internet connection. Keep the files and assets folder together.
+- Plain bio, project descriptions and links based on your original page.
+- Removed the slogans, giant headline, numbered sections, floating labels, star background, decorative project mockups and oversized spacing.
+- Cherry-blossom banner, readable text and a compact two-column desktop layout.
+- Small draggable 3D knot with a pause button and reduced-motion support.
+- Responsive mobile layout and keyboard controls.
+- Music playlist, previous/next, seek, volume and automatic advancement.
 
-To host it, upload the contents of `Mashood-3D` to a static host. Put `index.html` at the site's root. This archive does not deploy or change your existing live site.
+## Adding songs
 
-## What's new
+Only the supplied Chandelier audio is bundled. Additional songs have not been downloaded or generated.
 
-- Real WebGL chrome knot sculpture, generated from 3D geometry, with orbit rings and satellites.
-- Drag to rotate; focus the sculpture and use arrow keys. Double-click or press Home to reset.
-- Rose, Ice and Lilac theme controls. The chosen theme is remembered when browser storage is available.
-- Perspective hover interaction on the profile and project cards.
-- Original cherry-blossom artwork used in the personal profile card.
-- Purpose-built project illustrations, ambient stars, responsive desktop/mobile layouts.
-- Local music with explicit play/pause and volume controls; no surprise autoplay.
-- A floating Motion button, reduced-motion support, keyboard focus states and a skip link.
-- The WebGL loop sleeps while offscreen or in a hidden tab. Devices without WebGL see a CSS sculpture fallback.
-- No external JavaScript libraries, icon fonts or remotely loaded fonts.
+The player’s **Add songs** button accepts multiple audio files from your device. These play in the current browser tab and are not uploaded. They disappear when the tab is refreshed or closed. Remove an added song with its × button.
 
-## Files
+To make extra songs available to everyone visiting your website:
 
-- `index.html` — content, navigation, project links, social links and original credits.
-- `style.css` — layout, responsive rules, visual effects and CSS fallback.
-- `scene.js` — WebGL geometry, material shader, lighting and interaction.
-- `app.js` — themes, tilt, music, motion and progress controls.
-- `assets/` — supplied music and artwork, a still extracted from the supplied background, and a new favicon.
+1. Place the audio files you want to use in `assets/`.
+2. Add an entry for each file in `songs.js`, for example:
 
-## Customize
+```js
+window.SITE_SONGS = [
+  { title: 'Chandelier', artist: 'Will Paquin', src: 'assets/music1.mp3' },
+  { title: 'Your song', artist: 'Artist name', src: 'assets/your-song.mp3' }
+];
+```
 
-Edit your bio, project descriptions and links in `index.html`. Adjust the default palette in `style.css` and the three selectable palettes in `app.js`. Replace `assets/music1.mp3` to change the audio; update its visible title, artist credit and accessible labels in `index.html` and `app.js` too.
+3. Upload the updated `songs.js` and the audio files to your host.
 
-Your original third social button pointed to a Tenor GIF, not a Roblox profile. That same destination is preserved under “Just for fun.” Change its link and label if you intended a Roblox profile instead.
+Use audio you have permission to share. The player intentionally does not autoplay. It advances through the playlist and returns to the first track after the last. Missing or unsupported audio shows an error without endlessly retrying.
 
-The original `BYAKKUYAAAA.gif` and `RUKIA.gif` were two-byte placeholders and were omitted. The original references to a missing favicon and `music2.mp3` through `music10.mp3` were replaced with valid local assets. Existing attribution is retained in the expandable footer. Original `background.gif`, `roblox.png`, `github.png`, `discord.png` and `cursor.png` are included for future customization; not every retained asset is used by the redesign.
+## Editing
 
-## Verification
+- `index.html`: bio, projects, social links, credits.
+- `style.css`: layout and colours.
+- `songs.js`: permanent playlist for all visitors.
+- `app.js`: player and motion controls.
+- `scene.js`: 3D knot.
 
-JavaScript syntax, internal anchors, bundled asset paths, unique HTML IDs and external-link protections were checked. A simulated WebGL environment exercised finite geometry buffers and matrices, draw calls, drag/keyboard rotation, theme changes, pause and fallback behavior. Controls were checked in a simulated DOM.
+Your original third social link points to a GIF, so it is labelled “Random GIF.”
 
-A browser preview and real GPU shader compilation were not available in the build environment, so actual browser rendering and audio playback have not been visually or audibly verified here. The page includes a graceful CSS fallback if WebGL initialization fails.
+## Checks
+
+JavaScript syntax, local asset references, internal links, unique IDs and external link protections passed. Simulated control tests passed for audio import, file filtering, track navigation, playback state, automatic advancement, removing tracks, object URL cleanup, seeking, volume and motion.
+
+Browser visual testing and real audio playback were not available in this environment. WebGL initialization failures use a static CSS fallback.

@@ -5,7 +5,7 @@
   const shell = document.getElementById('scene-shell');
   let gl;
   try { gl = canvas.getContext('webgl', {alpha:true, antialias:true, powerPreference:'low-power'}); } catch (_) {}
-  const fallback = () => { shell.classList.remove('webgl-ready'); canvas.hidden=true; document.getElementById('scene-hint').textContent='CHROME / SCULPTURE'; };
+  const fallback = () => { shell.classList.remove('webgl-ready'); canvas.hidden=true; document.getElementById('scene-hint').textContent='3D preview'; };
   if (!gl) { fallback(); return; }
   const vertex = `attribute vec3 aPosition;attribute vec3 aNormal;uniform mat4 uModel;uniform mat4 uViewProjection;varying vec3 vPosition;varying vec3 vNormal;void main(){vec4 p=uModel*vec4(aPosition,1.0);vPosition=p.xyz;vNormal=mat3(uModel)*aNormal;gl_Position=uViewProjection*p;}`;
   const fragment = `precision mediump float;varying vec3 vPosition;varying vec3 vNormal;uniform vec3 uAccent;uniform vec3 uCamera;uniform float uGlow;
@@ -49,9 +49,9 @@
   function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;dragX+=(targetX-dragX)*.12;dragY+=(targetY-dragY)*.12;
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.uniformMatrix4fv(loc.uViewProjection,false,new Float32Array(projection(canvas.width/canvas.height)));gl.uniform3fv(loc.uCamera,[0,0,8.6]);gl.uniform3fv(loc.uAccent,accent);
     const bob=paused?0:Math.sin(time*.7)*.06;
-    draw(knot,transform(.36+dragY+hoverY,.25+time*.13+dragX+hoverX,-.31+Math.sin(time*.18)*.12,1,[0,bob,0]));
-    draw(ring,transform(1.05,.22+time*.08,-.5),.7);draw(ring,transform(-.65,.72,-.35-time*.045),.5);
-    const a=time*.26+.7;draw(ball,transform(0,time*.3,0,.105,[2.04*Math.cos(a),.9*Math.sin(a),1.4*Math.sin(a)]));draw(ball,transform(0,0,0,.055,[-1.8,1.28,.2]));draw(ball,transform(0,0,0,.075,[1.5,-1.45,.7]));
+    draw(knot,transform(.36+dragY+hoverY,.25+time*.08+dragX+hoverX,-.31+Math.sin(time*.18)*.12,1,[0,bob,0]));
+
+
     dirty=false;if(!paused||Math.abs(targetX-dragX)+Math.abs(targetY-dragY)>.002)wake();
   }
   function wake(){if(!frame&&visible&&!document.hidden)frame=requestAnimationFrame(render);}

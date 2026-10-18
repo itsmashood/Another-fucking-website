@@ -4,19 +4,6 @@
   const audio = $('music');
   const playlist = (window.SITE_SONGS || []).map(song => ({...song}));
   let current = 0, playRequest = 0, seeking = false;
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let paused = reduced.matches;
-  function motion(value) {
-    paused = value;
-    document.documentElement.classList.toggle('motion-paused', paused);
-    $('motion-toggle').textContent = paused ? 'Play animation' : 'Pause animation';
-    $('motion-toggle').setAttribute('aria-pressed', String(paused));
-    $('motion-toggle').setAttribute('aria-label', paused ? 'Play animation' : 'Pause animation');
-    document.dispatchEvent(new CustomEvent('motionchange', {detail:{paused}}));
-  }
-  motion(paused);
-  $('motion-toggle').addEventListener('click', () => motion(!paused));
-  reduced.addEventListener?.('change', e => motion(e.matches));
   audio.volume = .4;
   function format(seconds) {
     if (!Number.isFinite(seconds) || seconds < 0) return '0:00';

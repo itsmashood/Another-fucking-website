@@ -1,13 +1,13 @@
-# Mashood — personal website
+# radia — personal website
 
-Extract the ZIP and open `Mashood-Personal/index.html`. No installation or build step is required. To host it, upload the contents of that folder to your static website host.
+Extract the ZIP and open `radia-site/index.html`. No installation or build step is required. To host it, upload the contents of that folder to your static website host.
 
 ## Changes
 
 - Plain bio, project descriptions and links based on your original page.
 - Removed the slogans, giant headline, numbered sections, floating labels, star background, decorative project mockups and oversized spacing.
 - Cherry-blossom banner, readable text and a compact two-column desktop layout.
-- Custom extruded purple-and-pink X logo based on your reference, with bevelled edges, a luminous outline, gentle tilt, drag rotation, a pause button and reduced-motion support.
+- Custom extruded purple-and-pink X logo based on your reference, with bevelled edges, a luminous outline, gentle tilt, page-wide mouse-follow rotation, touch drag and system reduced-motion support. There is no on-page animation toggle.
 - Responsive mobile layout and keyboard controls.
 - Music playlist, previous/next, seek, volume and automatic advancement.
 
@@ -38,15 +38,17 @@ Use audio you have permission to share. The player intentionally does not autopl
 - `index.html`: bio, projects, social links, credits.
 - `style.css`: layout and colours.
 - `songs.js`: permanent playlist for all visitors.
-- `app.js`: player and motion controls.
+- `app.js`: music player controls.
 - `scene.js`: 3D X geometry, shading and interaction.
 
 Your original third social link points to a GIF, so it is labelled “Random GIF.”
 
 ## Checks
 
-JavaScript syntax, local asset references, internal links, unique IDs and external link protections passed. Simulated control tests passed for audio import, file filtering, track navigation, playback state, automatic advancement, removing tracks, object URL cleanup, seeking, volume and motion.
+JavaScript syntax, local asset references, internal links, unique IDs and external link protections passed. Simulated control tests passed for audio import, file filtering, track navigation, playback state, automatic advancement, removing tracks, object URL cleanup, seeking, volume.
 
 Browser visual testing and real audio playback were not available in this environment. WebGL initialization failures use a static SVG X fallback.
 
-The X replaces the earlier chrome knot. Arrow keys rotate it when focused; Home or double-click resets the view. Geometry, cap triangles and simulated render/interaction checks passed. A local mesh preview was inspected; actual browser/GPU rendering remains unverified here.
+The X replaces the earlier chrome knot. Mouse movement anywhere on the page rotates it without a click. Arrow keys rotate it when focused; Home or double-click resets the view. Geometry, cap triangles and simulated render/interaction checks passed. A local mesh preview was inspected; actual browser/GPU rendering remains unverified here.
+
+Display name: radia. Intro: “I'm radiawow.” Existing GitHub repository/account URLs and the Discord user ID are retained because replacement account URLs were not supplied; no new account destinations have been guessed.

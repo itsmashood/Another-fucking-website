@@ -83,27 +83,35 @@
   function multiply(a,b){const out=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)out[c*4+r]+=a[k*4+r]*b[c*4+k];return out;}
   function transform(rx,ry,rz,s=1,xyz=[0,0,0]){const x=identity(),y=identity(),z=identity();x[5]=x[10]=Math.cos(rx);x[6]=Math.sin(rx);x[9]=-Math.sin(rx);y[0]=y[10]=Math.cos(ry);y[2]=-Math.sin(ry);y[8]=Math.sin(ry);z[0]=z[5]=Math.cos(rz);z[1]=Math.sin(rz);z[4]=-Math.sin(rz);const m=multiply(z,multiply(y,x));for(let i=0;i<12;i++)m[i]*=s;m[12]=xyz[0];m[13]=xyz[1];m[14]=xyz[2];return m;}
   function projection(aspect){const f=1/Math.tan(.63/2),near=.1,far=50,p=[f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0],view=identity();view[14]=-8.6;return multiply(p,view);}
-  let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,visible=true,dirty=true,time=0,last=0,frame=0;
-  let dragX=0,dragY=0,targetX=0,targetY=0,hoverX=0,hoverY=0,pointer=null;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let paused=reduced.matches,visible=true,dirty=true,time=0,last=0,frame=0;
+  let dragX=0,dragY=0,targetX=0,targetY=0,hoverX=0,hoverY=0,followX=0,followY=0,pointer=null;
   function resize(){const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));gl.viewport(0,0,canvas.width,canvas.height);dirty=true;wake();}
   function draw(mesh,model,glow=0){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.p);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,mesh.n);gl.enableVertexAttribArray(normal);gl.vertexAttribPointer(normal,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,mesh.i);gl.uniformMatrix4fv(loc.uModel,false,new Float32Array(model));gl.uniform1f(loc.uGlow,glow);gl.drawElements(gl.TRIANGLES,mesh.count,gl.UNSIGNED_SHORT,0);}
-  function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;dragX+=(targetX-dragX)*.12;dragY+=(targetY-dragY)*.12;
+  function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;dragX+=(targetX-dragX)*.12;dragY+=(targetY-dragY)*.12;hoverX+=(followX-hoverX)*.10;hoverY+=(followY-hoverY)*.10;
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.uniformMatrix4fv(loc.uViewProjection,false,new Float32Array(projection(canvas.width/canvas.height)));gl.uniform3fv(loc.uCamera,[0,0,8.6]);
     const bob=paused?0:Math.sin(time*.7)*.06;
     const model=transform(.08+dragY+hoverY+Math.sin(time*.45)*.035,-.18+Math.sin(time*.32)*.22+dragX+hoverX,-.025,1.13,[0,bob*.5,0]);
     draw(logo,model);draw(neon,model,1);
 
 
-    dirty=false;if(!paused||Math.abs(targetX-dragX)+Math.abs(targetY-dragY)>.002)wake();
+    dirty=false;if(!paused||Math.abs(targetX-dragX)+Math.abs(targetY-dragY)+Math.abs(followX-hoverX)+Math.abs(followY-hoverY)>.002)wake();
   }
   function wake(){if(!frame&&visible&&!document.hidden)frame=requestAnimationFrame(render);}
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;pointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);});
-  canvas.addEventListener('pointermove',e=>{if(pointer&&e.pointerId===pointer.id){targetX+=(e.clientX-pointer.x)*.009;targetY+=(e.clientY-pointer.y)*.009;pointer.x=e.clientX;pointer.y=e.clientY;wake();}else if(e.pointerType==='mouse'&&!paused){const r=canvas.getBoundingClientRect();hoverX=(e.clientX-r.left-r.width/2)/r.width*.18;hoverY=(e.clientY-r.top-r.height/2)/r.height*.12;}});
+  canvas.addEventListener('pointermove',e=>{if(pointer&&e.pointerId===pointer.id){targetX+=(e.clientX-pointer.x)*.009;targetY+=(e.clientY-pointer.y)*.009;pointer.x=e.clientX;pointer.y=e.clientY;wake();}});
+  // Follow the mouse across the whole page, without clicking the logo.
+  document.addEventListener('pointermove',e=>{
+    if(e.pointerType!=='mouse'||pointer)return;
+    followX=Math.max(-1,Math.min(1,e.clientX/Math.max(window.innerWidth,1)*2-1))*.72;
+    followY=Math.max(-1,Math.min(1,e.clientY/Math.max(window.innerHeight,1)*2-1))*.38;
+    wake();
+  },{passive:true});
+  document.addEventListener('pointerout',e=>{if(!e.relatedTarget){followX=followY=0;wake();}});
   ['pointerup','pointercancel','lostpointercapture'].forEach(event=>canvas.addEventListener(event,()=>{pointer=null;}));
-  canvas.addEventListener('pointerleave',()=>{hoverX=hoverY=0;});
   canvas.addEventListener('dblclick',()=>{targetX=targetY=0;wake();});
   canvas.addEventListener('keydown',e=>{const keys=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'];if(!keys.includes(e.key))return;e.preventDefault();if(e.key==='ArrowLeft')targetX-=.18;if(e.key==='ArrowRight')targetX+=.18;if(e.key==='ArrowUp')targetY-=.18;if(e.key==='ArrowDown')targetY+=.18;if(e.key==='Home')targetX=targetY=0;wake();});
-  document.addEventListener('motionchange',e=>{paused=e.detail.paused;last=0;dirty=true;wake();});
+  reduced.addEventListener?.('change',e=>{paused=e.matches;last=0;wake();});
   document.addEventListener('visibilitychange',()=>{last=0;if(!document.hidden)wake();});
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(frame);frame=0;last=0;}},{rootMargin:'150px'}).observe(shell);
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(shell);else window.addEventListener('resize',resize);

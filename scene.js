@@ -5,7 +5,7 @@
   const shell = document.getElementById('scene-shell');
   let gl;
   try { gl = canvas.getContext('webgl', {alpha:true, antialias:true, powerPreference:'low-power'}); } catch (_) {}
-  const fallback = () => { shell.classList.remove('webgl-ready'); canvas.hidden=true; document.getElementById('scene-hint').textContent='X logo'; };
+  const fallback = () => { shell.classList.remove('webgl-ready'); canvas.hidden=true; };
   if (!gl) { fallback(); return; }
   const vertex = `attribute vec3 aPosition;attribute vec3 aNormal;uniform mat4 uModel;uniform mat4 uViewProjection;varying vec3 vPosition;varying vec3 vNormal;varying vec3 vLocal;void main(){vec4 p=uModel*vec4(aPosition,1.0);vPosition=p.xyz;vLocal=aPosition;vNormal=mat3(uModel)*aNormal;gl_Position=uViewProjection*p;}`;
   const fragment = `precision mediump float;
@@ -86,12 +86,12 @@
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let paused=reduced.matches,visible=true,dirty=true,time=0,last=0,frame=0;
   let dragX=0,dragY=0,targetX=0,targetY=0,hoverX=0,hoverY=0,followX=0,followY=0,pointer=null;
-  function resize(){const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));gl.viewport(0,0,canvas.width,canvas.height);dirty=true;wake();}
+  function resize(){const r=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));gl.viewport(0,0,canvas.width,canvas.height);dirty=true;wake();}
   function draw(mesh,model,glow=0){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.p);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,mesh.n);gl.enableVertexAttribArray(normal);gl.vertexAttribPointer(normal,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,mesh.i);gl.uniformMatrix4fv(loc.uModel,false,new Float32Array(model));gl.uniform1f(loc.uGlow,glow);gl.drawElements(gl.TRIANGLES,mesh.count,gl.UNSIGNED_SHORT,0);}
-  function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;dragX+=(targetX-dragX)*.12;dragY+=(targetY-dragY)*.12;hoverX+=(followX-hoverX)*.10;hoverY+=(followY-hoverY)*.10;
+  function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;const ease=1-Math.exp(-12*(dt||1/60));dragX+=(targetX-dragX)*ease;dragY+=(targetY-dragY)*ease;hoverX+=(followX-hoverX)*ease;hoverY+=(followY-hoverY)*ease;
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.uniformMatrix4fv(loc.uViewProjection,false,new Float32Array(projection(canvas.width/canvas.height)));gl.uniform3fv(loc.uCamera,[0,0,8.6]);
     const bob=paused?0:Math.sin(time*.7)*.06;
-    const model=transform(.08+dragY+hoverY+Math.sin(time*.45)*.035,-.18+Math.sin(time*.32)*.22+dragX+hoverX,-.025,1.13,[0,bob*.5,0]);
+    const model=transform(.08+dragY+hoverY+Math.sin(time*.45)*.035,-.18+Math.sin(time*.32)*.22+dragX+hoverX,-.025,1.26*Math.min(1,canvas.width/canvas.height),[0,bob*.5,0]);
     draw(logo,model);draw(neon,model,1);
 
 
@@ -109,8 +109,8 @@
   },{passive:true});
   document.addEventListener('pointerout',e=>{if(!e.relatedTarget){followX=followY=0;wake();}});
   ['pointerup','pointercancel','lostpointercapture'].forEach(event=>canvas.addEventListener(event,()=>{pointer=null;}));
-  canvas.addEventListener('dblclick',()=>{targetX=targetY=0;wake();});
-  canvas.addEventListener('keydown',e=>{const keys=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'];if(!keys.includes(e.key))return;e.preventDefault();if(e.key==='ArrowLeft')targetX-=.18;if(e.key==='ArrowRight')targetX+=.18;if(e.key==='ArrowUp')targetY-=.18;if(e.key==='ArrowDown')targetY+=.18;if(e.key==='Home')targetX=targetY=0;wake();});
+  canvas.addEventListener('dblclick',()=>{targetX=targetY=followX=followY=0;wake();});
+  canvas.addEventListener('keydown',e=>{const keys=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'];if(!keys.includes(e.key))return;e.preventDefault();if(e.key==='ArrowLeft')targetX-=.18;if(e.key==='ArrowRight')targetX+=.18;if(e.key==='ArrowUp')targetY-=.18;if(e.key==='ArrowDown')targetY+=.18;if(e.key==='Home')targetX=targetY=followX=followY=0;wake();});
   reduced.addEventListener?.('change',e=>{paused=e.matches;last=0;wake();});
   document.addEventListener('visibilitychange',()=>{last=0;if(!document.hidden)wake();});
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(frame);frame=0;last=0;}},{rootMargin:'150px'}).observe(shell);

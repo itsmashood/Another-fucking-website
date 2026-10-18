@@ -1,54 +1,49 @@
 # radia — personal website
 
-Extract the ZIP and open `radia-site/index.html`. No installation or build step is required. To host it, upload the contents of that folder to your static website host.
+Extract the ZIP and open `radia-site/index.html`. No build, installation, API key or CDN is needed. To publish, upload the contents of `radia-site` to your static hosting root.
 
-## Changes
+## This version
 
-- Plain bio, project descriptions and links based on your original page.
-- Removed the slogans, giant headline, numbered sections, floating labels, star background, decorative project mockups and oversized spacing.
-- Cherry-blossom banner, readable text and a compact two-column desktop layout.
-- Custom extruded purple-and-pink X logo based on your reference, with bevelled edges, a luminous outline, gentle tilt, page-wide mouse-follow rotation, touch drag and system reduced-motion support. There is no on-page animation toggle.
-- Responsive mobile layout and keyboard controls.
-- Music playlist, previous/next, seek, volume and automatic advancement.
+- Responsive layout with a larger interactive X, cherry-blossom strip, featured Xyneria project and smaller project cards.
+- The header reads “radia” and the introduction reads “I'm radiawow.”
+- Original bio, project destinations, social destinations and contributor credits retained.
+- Purple-and-pink bevelled 3D X with page-wide mouse-follow, smoother movement, touch drag and keyboard rotation. Double-click or press Home while focused to reset.
+- No visible rotation instructions, animation switch or visitor audio-file chooser.
+- Compact music player with a decorative record animation, seek control, volume, loading/error status and automatic track advancement. The record and decorative equalizer animate during playback; they are not an audio-amplitude visualizer.
+- Volume is remembered on the same browser when storage is available. Music never starts automatically.
+- Keyboard focus styles, skip link, labelled controls and operating-system reduced-motion support.
+- Active-section navigation and restrained hover lighting.
+- No remote scripts, stylesheets, fonts or image dependencies. External links require internet access.
 
-## Adding songs
+## Music
 
-Only the supplied Chandelier audio is bundled. Additional songs have not been downloaded or generated.
+The supplied Chandelier track by Will Paquin is bundled. No additional recordings have been added.
 
-The player’s **Add songs** button accepts multiple audio files from your device. These play in the current browser tab and are not uploaded. They disappear when the tab is refreshed or closed. Remove an added song with its × button.
-
-To make extra songs available to everyone visiting your website:
-
-1. Place the audio files you want to use in `assets/`.
-2. Add an entry for each file in `songs.js`, for example:
+To add permanent tracks for every visitor, put audio files you have permission to share in `assets/`, then add entries in `songs.js`:
 
 ```js
 window.SITE_SONGS = [
   { title: 'Chandelier', artist: 'Will Paquin', src: 'assets/music1.mp3' },
-  { title: 'Your song', artist: 'Artist name', src: 'assets/your-song.mp3' }
+  { title: 'Your song', artist: 'Artist', src: 'assets/your-song.mp3' }
 ];
 ```
 
-3. Upload the updated `songs.js` and the audio files to your host.
+Previous/next buttons appear when the configured playlist contains more than one song. The final track loops back to the first. There is no visitor upload or file chooser.
 
-Use audio you have permission to share. The player intentionally does not autoplay. It advances through the playlist and returns to the first track after the last. Missing or unsupported audio shows an error without endlessly retrying.
+## Files
 
-## Editing
+- `index.html` — content, sections, links and credits.
+- `style.css` — appearance, depth effects and responsive layouts.
+- `scene.js` — X geometry, materials and mouse/keyboard/touch interaction.
+- `app.js` — audio player and saved volume.
+- `interface.js` — panel hover lighting and navigation state.
+- `songs.js` — owner-configured audio playlist.
+- `assets/` — audio, cherry-blossom image, SVG logo fallback and favicon.
 
-- `index.html`: bio, projects, social links, credits.
-- `style.css`: layout and colours.
-- `songs.js`: permanent playlist for all visitors.
-- `app.js`: music player controls.
-- `scene.js`: 3D X geometry, shading and interaction.
+The existing GitHub and Discord destinations remain the supplied accounts. Changing the visible name does not imply that those accounts have been renamed.
 
-Your original third social link points to a GIF, so it is labelled “Random GIF.”
+## Verification
 
-## Checks
+JavaScript syntax, all local asset references, unique IDs, fragment links, audio DOM references and link protections were checked. Simulated controls passed for no autoplay, volume persistence, seek progress, play/pause state, track looping, multiple-track navigation, empty playlists, playback failures and cancellation while loading. Simulated WebGL tests passed for mesh buffers, matrices, draw calls, mouse-follow rotation, keyboard and drag input, and unavailable-context fallback.
 
-JavaScript syntax, local asset references, internal links, unique IDs and external link protections passed. Simulated control tests passed for audio import, file filtering, track navigation, playback state, automatic advancement, removing tracks, object URL cleanup, seeking, volume.
-
-Browser visual testing and real audio playback were not available in this environment. WebGL initialization failures use a static SVG X fallback.
-
-The X replaces the earlier chrome knot. Mouse movement anywhere on the page rotates it without a click. Arrow keys rotate it when focused; Home or double-click resets the view. Geometry, cap triangles and simulated render/interaction checks passed. A local mesh preview was inspected; actual browser/GPU rendering remains unverified here.
-
-Display name: radia. Intro: “I'm radiawow.” Existing GitHub repository/account URLs and the Discord user ID are retained because replacement account URLs were not supplied; no new account destinations have been guessed.
+This environment does not provide a live browser preview. Actual browser layout, GPU rendering and audible playback have not been verified here. Devices without WebGL see the SVG X fallback. Rendering sleeps while the X is offscreen or the browser tab is hidden.

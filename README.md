@@ -7,7 +7,7 @@ Extract the ZIP and open `Mashood-Personal/index.html`. No installation or build
 - Plain bio, project descriptions and links based on your original page.
 - Removed the slogans, giant headline, numbered sections, floating labels, star background, decorative project mockups and oversized spacing.
 - Cherry-blossom banner, readable text and a compact two-column desktop layout.
-- Small draggable 3D knot with a pause button and reduced-motion support.
+- Custom extruded purple-and-pink X logo based on your reference, with bevelled edges, a luminous outline, gentle tilt, drag rotation, a pause button and reduced-motion support.
 - Responsive mobile layout and keyboard controls.
 - Music playlist, previous/next, seek, volume and automatic advancement.
 
@@ -39,7 +39,7 @@ Use audio you have permission to share. The player intentionally does not autopl
 - `style.css`: layout and colours.
 - `songs.js`: permanent playlist for all visitors.
 - `app.js`: player and motion controls.
-- `scene.js`: 3D knot.
+- `scene.js`: 3D X geometry, shading and interaction.
 
 Your original third social link points to a GIF, so it is labelled “Random GIF.”
 
@@ -47,4 +47,6 @@ Your original third social link points to a GIF, so it is labelled “Random GIF
 
 JavaScript syntax, local asset references, internal links, unique IDs and external link protections passed. Simulated control tests passed for audio import, file filtering, track navigation, playback state, automatic advancement, removing tracks, object URL cleanup, seeking, volume and motion.
 
-Browser visual testing and real audio playback were not available in this environment. WebGL initialization failures use a static CSS fallback.
+Browser visual testing and real audio playback were not available in this environment. WebGL initialization failures use a static SVG X fallback.
+
+The X replaces the earlier chrome knot. Arrow keys rotate it when focused; Home or double-click resets the view. Geometry, cap triangles and simulated render/interaction checks passed. A local mesh preview was inspected; actual browser/GPU rendering remains unverified here.

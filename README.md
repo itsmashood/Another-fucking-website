@@ -47,3 +47,10 @@ The existing GitHub and Discord destinations remain the supplied accounts. Chang
 JavaScript syntax, all local asset references, unique IDs, fragment links, audio DOM references and link protections were checked. Simulated controls passed for no autoplay, volume persistence, seek progress, play/pause state, track looping, multiple-track navigation, empty playlists, playback failures and cancellation while loading. Simulated WebGL tests passed for mesh buffers, matrices, draw calls, mouse-follow rotation, keyboard and drag input, and unavailable-context fallback.
 
 This environment does not provide a live browser preview. Actual browser layout, GPU rendering and audible playback have not been verified here. Devices without WebGL see the SVG X fallback. Rendering sleeps while the X is offscreen or the browser tab is hidden.
+
+## v2 changes
+
+- The X now spins on its own, with two glowing satellites orbiting it on tilted rings. Mouse-follow and dragging still tilt it. Reduced-motion users get a still X.
+- Header: logo left, nav centred, GitHub / Discord / Roblox icon buttons right. Hero: "My projects" + "Find me online". Links section: icon cards.
+- Icons live in `assets/icons/` (`github.svg`, `discord.svg`, `roblox.svg`). To use your own, overwrite those three files with the same names.
+- The Roblox link is a placeholder (`https://www.roblox.com/`). Replace it in `index.html` (two places) with your profile URL.

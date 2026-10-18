@@ -79,6 +79,17 @@
     surface([...edgeInner[i],-.212],[...edgeInner[j],-.212],[...edgeOuter[j],-.212],[...edgeOuter[i],-.212]);
   }
   const neon=mesh(positions,normals,indices);
+  // Orbit pieces: a small sphere (satellite) and a thin ring (its path).
+  function sphereMesh(seg=28,rings=18){const P=[],N=[],I=[];for(let y=0;y<=rings;y++){const v=y/rings*Math.PI;for(let x=0;x<=seg;x++){const u=x/seg*Math.PI*2,n=[Math.sin(v)*Math.cos(u),Math.cos(v),Math.sin(v)*Math.sin(u)];P.push(...n);N.push(...n);}}
+    for(let y=0;y<rings;y++)for(let x=0;x<seg;x++){const a=y*(seg+1)+x,b=a+seg+1;I.push(a,b,a+1,b,b+1,a+1);}return mesh(P,N,I);}
+  function ringMesh(seg=120,tube=8,minor=.012){const P=[],N=[],I=[];for(let i=0;i<=seg;i++){const u=i/seg*Math.PI*2,c=Math.cos(u),sn=Math.sin(u);for(let j=0;j<=tube;j++){const v=j/tube*Math.PI*2,n=[Math.cos(v)*c,Math.sin(v),Math.cos(v)*sn];P.push(c+minor*n[0],minor*n[1],sn+minor*n[2]);N.push(...n);}}
+    for(let i=0;i<seg;i++)for(let j=0;j<tube;j++){const a=i*(tube+1)+j,b=a+tube+1;I.push(a,b,a+1,b,b+1,a+1);}return mesh(P,N,I);}
+  const sphere=sphereMesh(),ring=ringMesh();
+  // Each orbit: tilt of its plane, radius, speed (rad/s), satellite size, start angle.
+  const orbits=[
+    {rx:.42,rz:.38,r:3.0,speed:.9,size:.17,phase:0,glow:.55},
+    {rx:-.5,rz:-.55,r:2.3,speed:-.6,size:.11,phase:2.2,glow:.35}
+  ];
   const identity=()=>[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
   function multiply(a,b){const out=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)out[c*4+r]+=a[k*4+r]*b[c*4+k];return out;}
   function transform(rx,ry,rz,s=1,xyz=[0,0,0]){const x=identity(),y=identity(),z=identity();x[5]=x[10]=Math.cos(rx);x[6]=Math.sin(rx);x[9]=-Math.sin(rx);y[0]=y[10]=Math.cos(ry);y[2]=-Math.sin(ry);y[8]=Math.sin(ry);z[0]=z[5]=Math.cos(rz);z[1]=Math.sin(rz);z[4]=-Math.sin(rz);const m=multiply(z,multiply(y,x));for(let i=0;i<12;i++)m[i]*=s;m[12]=xyz[0];m[13]=xyz[1];m[14]=xyz[2];return m;}
@@ -90,11 +101,18 @@
   function draw(mesh,model,glow=0){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.p);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,mesh.n);gl.enableVertexAttribArray(normal);gl.vertexAttribPointer(normal,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,mesh.i);gl.uniformMatrix4fv(loc.uModel,false,new Float32Array(model));gl.uniform1f(loc.uGlow,glow);gl.drawElements(gl.TRIANGLES,mesh.count,gl.UNSIGNED_SHORT,0);}
   function render(now){frame=0;if(document.hidden||!visible){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;if(!paused)time+=dt;const ease=1-Math.exp(-12*(dt||1/60));dragX+=(targetX-dragX)*ease;dragY+=(targetY-dragY)*ease;hoverX+=(followX-hoverX)*ease;hoverY+=(followY-hoverY)*ease;
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.uniformMatrix4fv(loc.uViewProjection,false,new Float32Array(projection(canvas.width/canvas.height)));gl.uniform3fv(loc.uCamera,[0,0,8.6]);
-    const bob=paused?0:Math.sin(time*.7)*.06;
-    const model=transform(.08+dragY+hoverY+Math.sin(time*.45)*.035,-.18+Math.sin(time*.32)*.22+dragX+hoverX,-.025,1.26*Math.min(1,canvas.width/canvas.height),[0,bob*.5,0]);
+    const k=Math.min(1,canvas.width/canvas.height),spin=time*.55;
+    const tiltX=.08+dragY+hoverY+Math.sin(time*.45)*.035,tiltY=-.18+spin+dragX+hoverX;
+    const model=transform(tiltX,tiltY,-.025,1.08*k,[0,0,0]);
     draw(logo,model);draw(neon,model,1);
-
-
+    orbits.forEach(o=>{
+      // Orbit plane follows the mouse tilt slightly so it feels attached to the X.
+      const frame=transform(o.rx+tiltX*.35,0,o.rz,1,[0,0,0]);
+      draw(ring,multiply(frame,transform(0,0,0,o.r*k,[0,0,0])),o.glow);
+      const a=o.phase+time*o.speed;
+      const sat=multiply(frame,multiply(transform(0,a,0,1,[0,0,0]),transform(0,0,0,o.size*k*1.0,[o.r*k,0,0])));
+      draw(sphere,sat,1);
+    });
     dirty=false;if(!paused||Math.abs(targetX-dragX)+Math.abs(targetY-dragY)+Math.abs(followX-hoverX)+Math.abs(followY-hoverY)>.002)wake();
   }
   function wake(){if(!frame&&visible&&!document.hidden)frame=requestAnimationFrame(render);}

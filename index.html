@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#111014"><meta name="description" content="radiawow's personal website. Python, JavaScript, web design, projects and links.">
 <title>radia</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css"><script src="songs.js" defer></script><script src="scene.js" defer></script><script src="app.js" defer></script><script src="interface.js" defer></script>
+<link rel="stylesheet" href="sans.css"><script src="sans-lines.js" defer></script><script src="sans.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -31,4 +32,8 @@
 </main>
 <footer class="page"><div class="footer-line"><a class="footer-name" href="#top">radia.</a><a class="back-top" href="#top">Back to top <span aria-hidden="true">↑</span></a></div><details class="credits"><summary>Credits</summary><dl><div><dt>Original scripts</dt><dd>radia & karrraaa & mina</dd></div><div><dt>Original styling</dt><dd>swoftbwunnies</dd></div><div><dt>Original buttons</dt><dd>mxllie</dd></div><div><dt>Music</dt><dd>Chandelier — Will Paquin</dd></div></dl></details></footer>
 <audio id="music" preload="metadata"></audio><div id="announcement" class="sr-only" aria-live="polite"></div>
+<aside id="sans-companion" aria-label="Sans companion">
+<div id="sans-bubble" hidden><span class="sans-speaker">sans</span><button id="sans-close" type="button" aria-label="Close dialogue">×</button><p id="sans-text" aria-hidden="true"></p><span id="sans-spoken" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span></div>
+<div class="sans-dock"><button id="sans-character" type="button" aria-label="Talk to Sans"><img src="assets/sans.svg" alt="" width="96" height="123"><span class="sans-zzz" aria-hidden="true">z z z</span></button><div class="sans-actions" aria-label="Dialogue choices"><button type="button" data-sans="talk">talk</button><button type="button" data-sans="joke">joke</button><button type="button" data-sans="nap">nap</button></div></div>
+</aside>
 </body></html>

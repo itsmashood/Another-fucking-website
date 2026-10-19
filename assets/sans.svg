@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 82" shape-rendering="crispEdges">
+<title>Sans in a blue jacket, black shorts and pink slippers</title>
+<g stroke="#101019" stroke-width="2" stroke-linejoin="miter">
+<path fill="#fff" d="M18 4h28v3h6v6h3v17h-4v7h-6v4H20v-4h-7v-7h-4V14h3V8h6Z"/>
+<path fill="#121219" stroke="none" d="M17 17h12v10H17zM36 17h12v10H36zM30 27h5v5h-5z"/>
+<path fill="#fff" stroke="none" d="M22 20h3v4h-3zM40 20h3v4h-3z"/>
+<path fill="#fff" d="M16 29l5 4h24l5-4-3 8-8 3H26l-8-4Z"/>
+<path fill="none" stroke-width="1" d="M24 33v5m6-5v7m6-7v7m6-7v5"/>
+<path fill="#337bd0" d="M19 40h26l9 6 4 17-10 4-5-5H21l-5 5-10-4 4-17Z"/>
+<path fill="#fff" d="m21 40 11 5 11-5-3 17H24Z"/>
+<path fill="#d8e5ed" d="m20 40-6 5 9 10 4-10Zm24 0 6 5-9 10-4-10Z"/>
+<path fill="#337bd0" d="m14 48 4 15 11-3-3-13m24 1-4 15-11-3 3-13"/>
+<path fill="#14141e" d="M20 60h24l3 12H35l-3-7-3 7H17Z"/>
+<path fill="#fff" d="M20 72h8v5h-8zm16 0h8v5h-8z"/>
+<path fill="#eaa9c9" d="M17 76h12v5H12v-3Zm18 0h12l5 2v3H35Z"/>
+</g></svg>

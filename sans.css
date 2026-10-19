@@ -1,0 +1,20 @@
+/* Fixed companion; the empty area around him never intercepts page clicks. */
+#sans-companion{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:25;width:204px;pointer-events:none;font-family:'Courier New',monospace}
+.sans-dock{display:flex;align-items:flex-end;justify-content:flex-end;gap:10px;pointer-events:none}
+#sans-character{position:relative;pointer-events:auto;padding:0;border:0;background:transparent;width:96px;height:123px;filter:drop-shadow(0 4px 7px #0009)}
+#sans-character img{display:block;width:100%;height:100%;image-rendering:pixelated;transform-origin:bottom;animation:sans-idle 4s ease-in-out infinite}
+#sans-character:hover img{transform:rotate(-4deg)}
+.sans-actions{display:flex;flex-direction:column;gap:4px;pointer-events:auto}
+.sans-actions button{height:34px;min-width:66px;border:1px solid #bda4cd70;background:#17121ef2;color:#edd9f6;border-radius:4px;font:12px 'Courier New',monospace}
+.sans-actions button:hover,.sans-actions button:focus-visible{color:#ffcfef;border-color:#efa1d1;background:#322039}
+#sans-bubble{position:absolute;bottom:140px;right:0;width:280px;max-width:calc(100vw - 32px);background:#0d0c11;border:2px solid #f3eaf7;box-shadow:4px 4px 0 #0008;padding:16px 32px 16px 16px;color:#fff;pointer-events:auto}
+#sans-bubble:after{content:'';position:absolute;bottom:-8px;right:110px;width:12px;height:12px;background:#0d0c11;border-right:2px solid #f3eaf7;border-bottom:2px solid #f3eaf7;transform:rotate(45deg)}
+.sans-speaker{display:block;color:#c5a2d8;font-size:10px;margin-bottom:7px}
+#sans-text{font-size:13px;line-height:1.65;min-height:44px;margin:0;overflow-wrap:anywhere}#sans-text:before{content:'* ';color:#e7b0cf}
+#sans-close{position:absolute;right:0;top:0;width:32px;height:32px;padding:0;border:0;background:transparent;color:#bfaec6;font-size:21px}
+.sans-zzz{display:none;position:absolute;top:4px;right:-3px;color:#d8b6f3;font-size:12px}.napping .sans-zzz{display:block}.napping #sans-character img{opacity:.85}
+.speaking #sans-character img{animation:sans-talk .22s steps(2,end) infinite}
+@keyframes sans-idle{50%{transform:translateY(-3px)}}@keyframes sans-talk{50%{transform:translateY(-2px) rotate(1deg)}}
+footer.page{padding-bottom:190px}
+@media(max-width:600px){#sans-companion{right:max(10px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));width:158px}#sans-character{width:70px;height:90px}.sans-dock{gap:4px}.sans-actions{gap:2px}.sans-actions button{min-width:64px;height:32px}#sans-bubble{bottom:116px;width:254px}#sans-bubble:after{right:93px}#sans-text{font-size:12px}.sans-actions button{font-size:11px}footer.page{padding-bottom:160px}}
+@media(prefers-reduced-motion:reduce){#sans-character img{animation:none!important}}

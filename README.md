@@ -55,3 +55,9 @@ The existing GitHub and Discord destinations remain the supplied accounts. Chang
 JavaScript syntax, all local asset references, unique IDs, fragment links, audio DOM references and link protections were checked. Simulated controls passed for no autoplay, volume persistence, seek progress, play/pause state, track looping, multiple-track navigation, empty playlists, playback failures and cancellation while loading. Navigation checks passed for scroll tracking, shared rows, chosen tabs, responsive section ordering and hash changes. Simulated WebGL tests passed for mesh buffers, matrices, draw calls, mouse-follow rotation, keyboard and drag input, and unavailable-context fallback.
 
 This environment does not provide a live browser preview. Actual browser layout, GPU rendering and audible playback have not been verified here. Devices without WebGL see the SVG X fallback. A lost graphics context also switches to that fallback without restarting the failed renderer. Rendering sleeps while the X is offscreen or the browser tab is hidden.
+
+## Sans companion
+
+Sans stays fixed in the bottom-right corner on desktop and mobile. Click him or use talk, joke and nap. Downward scrolling triggers “what do you wanna find down there?” with a 20-second cooldown; button dialogue gets 10 seconds of priority. Closing the speech bubble keeps Sans visible.
+
+Edit `sans-lines.js` to change the greeting, scroll line or button dialogue. `sans.css` controls placement and size; `assets/sans.svg` is a locally bundled custom vector depiction. The lines are original, character-inspired dialogue, not quoted game dialogue. No external image or audio requests are needed. Reduced-motion settings show dialogue instantly.

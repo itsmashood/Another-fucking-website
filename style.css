@@ -27,14 +27,25 @@
   .compact{min-height:226px}
   .bottom-grid{gap:56px}
 }
-/* ---- Side gutters: drifting Undertale souls fill the space beside the content ---- */
+/* ---- Side gutters: pink and purple smooth hearts; central pixel souls remain unchanged ---- */
 .side-rail{display:none;position:fixed;top:86px;bottom:0;width:calc((100vw - var(--pw,1120px))/2 - 12px);overflow:hidden;pointer-events:none;z-index:0;
   -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
 .side-rail.left{left:0;border-right:1px dashed #ffffff08}.side-rail.right{right:0;border-left:1px dashed #ffffff08}
-.side-rail svg{position:absolute;left:var(--x);bottom:var(--y);width:var(--s);height:var(--s);color:var(--c);opacity:.5;filter:drop-shadow(0 0 8px var(--c));animation:rail-float var(--d) linear var(--dl) infinite}
+.side-rail svg{position:absolute;left:var(--x);bottom:var(--y);width:var(--s);height:var(--s);color:var(--c);opacity:var(--o,.5);filter:drop-shadow(0 0 3px var(--c));animation:rail-float var(--d) linear var(--dl) infinite}
 @keyframes rail-float{0%{transform:translate(0,0)}50%{transform:translate(16px,-60vh)}100%{transform:translate(-8px,-120vh)}}
-@media(min-width:1680px){.side-rail{display:block}}
+@media(min-width:1180px){.side-rail{display:block}}
+@media(min-width:1180px) and (max-width:1679px){.side-rail svg:nth-child(n+33){display:none}}
 /* ---- Fallback (no WebGL): static hearts around the flat X ---- */
 .fallback-hearts{position:absolute;inset:0}.webgl-ready .fallback-hearts{display:none}
 .fb-heart{position:absolute;width:30px;height:30px;color:var(--c);filter:drop-shadow(0 0 6px var(--c))}
 .fb0{left:16%;top:18%}.fb1{left:48%;top:6%}.fb2{left:80%;top:22%}.fb3{left:10%;top:62%}.fb4{left:50%;top:84%}.fb5{left:82%;top:66%}.fb6{left:30%;top:40%;opacity:0}
+
+/* Social icons remain visible in the top corner, including on mobile. */
+.header-socials{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.header-socials .social-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid #ffffff14;border-radius:9px;background:#ffffff04;transition:background .2s,border-color .2s,transform .2s}
+.social-icon img{display:block;width:23px;height:23px;object-fit:contain}
+.social-icon.github img{filter:invert(1)}
+.header-socials .social-icon:hover{background:#e7b0cf14;border-color:#e7b0cf66;transform:translateY(-2px)}
+.link-initial.social-icon{padding:7px}.link-initial.social-icon img{width:100%;height:100%}
+@media(max-width:760px){.header{height:112px}.header-inner{display:grid;grid-template-columns:1fr auto;grid-template-rows:56px 44px;gap:0 12px;padding:4px 0 8px}.header-inner>.name{grid-column:1;grid-row:1;justify-self:start}.header-socials{grid-column:2;grid-row:1}.header-inner>nav{grid-column:1/-1;grid-row:2;justify-content:space-between;width:100%}.header-inner>nav a{flex:1;font-size:11px}.header-socials .social-icon{width:44px;height:44px}.header-socials{gap:5px}html{scroll-padding-top:130px}}
+@media(prefers-reduced-motion:reduce){.header-socials .social-icon:hover{transform:none}}

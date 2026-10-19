@@ -6,7 +6,9 @@ Extract the ZIP and open `radia-site/index.html`. No build, installation, API ke
 
 - The X is now orbited by two glowing rings carrying seven separate Undertale-style soul hearts (red, orange, yellow, green, cyan, blue, purple). Each heart is a real 3D pixel heart built from cubes, stays upright, sways with the mouse and pulses gently. They are generated in `scene.js`, so no new asset files are needed.
 - Wider layout: on large screens the page now uses up to 1500px instead of 1120px, with a bigger X panel and larger headline.
-- On very wide screens (1680px+) the side gutters are filled with softly drifting pixel hearts. Below that width they are hidden.
+- Side gutters use smooth pink and purple hearts with the same drifting animation: 160 hearts on wide screens, reduced to 64 between 1180px and 1679px, hidden below 1180px. Central Undertale soul hearts and their seven colours are unchanged.
+- GitHub, Discord and Roblox icons now appear in the top-right header and Links section. Mobile uses a two-row header to keep all icons visible. Icons are bundled locally.
+- The Roblox icon retains the original Tenor GIF destination; replace that URL in index.html with your Roblox profile if desired.
 - Without WebGL, the flat X shows with a few static pixel hearts around it.
 
 - Responsive layout with a larger interactive X, cherry-blossom strip, featured Xyneria project and smaller project cards.

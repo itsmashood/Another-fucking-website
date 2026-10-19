@@ -17,6 +17,7 @@
     spoken.textContent = text;
     visual.textContent = '';
     root.classList.add('speaking');
+    root.classList.toggle('greeting', text === lines.hello);
     if (manual) lockUntil = Date.now() + 10000;
     let i = 0;
     function type() {

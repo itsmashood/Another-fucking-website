@@ -7,6 +7,13 @@
   try { const saved = localStorage.getItem('radia-volume'); audio.volume = saved !== null && Number.isFinite(Number(saved)) ? Math.min(1, Math.max(0, Number(saved))) : .4; } catch (_) { audio.volume = .4; }
   $('volume').value = audio.volume;
   const time = seconds => Number.isFinite(seconds) && seconds >= 0 ? `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}` : '0:00';
+  const labelPosition = seconds => $('seek').setAttribute('aria-valuetext', `${time(seconds)} of ${time(audio.duration)}`);
+  function updateVolume() {
+    $('volume').value = audio.volume;
+    $('volume').style.setProperty('--progress', `${audio.volume * 100}%`);
+    $('volume').setAttribute('aria-valuetext', `${Math.round(audio.volume * 100)} percent`);
+  }
+  updateVolume();
   function setProgress(percent) {
     const value = Math.max(0, Math.min(100, Number(percent) || 0));
     $('seek').value = value;
@@ -19,6 +26,7 @@
     if (!seeking) {
       $('current-time').textContent = time(audio.currentTime);
       setProgress(Number.isFinite(duration) && duration > 0 ? audio.currentTime / duration * 100 : 0);
+      labelPosition(audio.currentTime);
     }
   }
   function updateState() {
@@ -51,7 +59,7 @@
     $('track-title').textContent = songs[current].title || 'Untitled';
     $('track-artist').textContent = songs[current].artist || '';
     $('duration').textContent = $('current-time').textContent = '0:00';
-    $('seek').disabled = true; seeking = false; setProgress(0); updateState();
+    $('seek').disabled = true; seeking = false; setProgress(0); labelPosition(0); updateState();
     if (start) play();
   }
   $('track-count').textContent = `${songs.length} ${songs.length === 1 ? 'track' : 'tracks'}`;
@@ -70,17 +78,23 @@
   audio.addEventListener('error', () => { ++request; pending = false; failure = 'Audio unavailable. Press play to retry.'; updateState(); $('announcement').textContent = 'The audio file could not be loaded.'; });
   $('seek').addEventListener('input', e => {
     seeking = true; setProgress(e.target.value);
-    if (Number.isFinite(audio.duration)) $('current-time').textContent = time(Number(e.target.value) / 100 * audio.duration);
+    if (Number.isFinite(audio.duration)) {
+      const position = Number(e.target.value) / 100 * audio.duration;
+      $('current-time').textContent = time(position); labelPosition(position);
+    }
   });
   $('seek').addEventListener('change', e => {
     if (Number.isFinite(audio.duration) && audio.duration > 0) audio.currentTime = Math.min(audio.duration, Math.max(0, Number(e.target.value) / 100 * audio.duration));
     seeking = false; updateTime();
   });
   $('seek').addEventListener('blur', () => { seeking = false; updateTime(); });
+  $('seek').addEventListener('pointercancel', () => { seeking = false; updateTime(); });
   $('volume').addEventListener('input', e => {
     audio.volume = Number(e.target.value);
+    updateVolume();
     try { localStorage.setItem('radia-volume', String(audio.volume)); } catch (_) {}
   });
+  audio.addEventListener('volumechange', updateVolume);
   if (songs.length) select(0);
   else { $('track-title').textContent = 'No audio'; $('track-artist').textContent = ''; updateState(); }
 })();

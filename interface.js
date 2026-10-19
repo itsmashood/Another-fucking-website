@@ -10,19 +10,30 @@
     }, {passive:true});
   });
   const links = Array.from(document.querySelectorAll('nav a'));
-  if (!('IntersectionObserver' in window)) return;
-  const positions = new Map();
+  const sections = links.map(link => ({link, section:document.querySelector(link.hash)})).filter(item => item.section);
+  let preferred = window.location.hash, frame = 0;
+  const header = document.querySelector('.header');
   const update = () => {
-    const visible = Array.from(positions).filter(([,state]) => state.visible).sort((a,b) => Math.abs(a[1].top - 120) - Math.abs(b[1].top - 120));
-    if (!visible.length) return;
+    frame = 0;
+    if (!sections.length) return;
+    const marker = header.getBoundingClientRect().bottom + 36;
+    const positions = sections.map(item => ({...item, top:item.section.getBoundingClientRect().top}));
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+    const passed = positions.filter(item => item.top <= marker || atBottom);
+    const latestTop = passed.length ? Math.max(...passed.map(item => item.top)) : positions[0].top;
+    const row = positions.filter(item => Math.abs(item.top - latestTop) < 2);
+    const selected = row.find(item => item.link.hash === preferred) || row[0];
     links.forEach(link => {
-      const active = link.hash === `#${visible[0][0]}`;
+      const active = link === selected.link;
       link.classList.toggle('active', active);
       if (active) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current');
     });
   };
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => positions.set(entry.target.id, {visible:entry.isIntersecting, top:entry.boundingClientRect.top})); update();
-  }, {rootMargin:'-80px 0px -35% 0px', threshold:[0,.25,.5,.75,1]});
-  links.forEach(link => { const target = document.querySelector(link.hash); if (target) observer.observe(target); });
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  links.forEach(link => link.addEventListener('click', () => { preferred = link.hash; schedule(); }));
+  window.addEventListener('hashchange', () => { preferred = window.location.hash; schedule(); });
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', schedule, {passive:true});
+  window.addEventListener('pageshow', schedule);
+  schedule();
 })();

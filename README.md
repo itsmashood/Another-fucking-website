@@ -4,6 +4,11 @@ Extract the ZIP and open `radia-site/index.html`. No build, installation, API ke
 
 ## This version
 
+- The X is now orbited by two glowing rings carrying seven separate Undertale-style soul hearts (red, orange, yellow, green, cyan, blue, purple). Each heart is a real 3D pixel heart built from cubes, stays upright, sways with the mouse and pulses gently. They are generated in `scene.js`, so no new asset files are needed.
+- Wider layout: on large screens the page now uses up to 1500px instead of 1120px, with a bigger X panel and larger headline.
+- On very wide screens (1680px+) the side gutters are filled with softly drifting pixel hearts. Below that width they are hidden.
+- Without WebGL, the flat X shows with a few static pixel hearts around it.
+
 - Responsive layout with a larger interactive X, cherry-blossom strip, featured Xyneria project and smaller project cards.
 - The header reads “radia” and the introduction reads “I'm radiawow.”
 - Original bio, project destinations, social destinations and contributor credits retained.
@@ -12,7 +17,8 @@ Extract the ZIP and open `radia-site/index.html`. No build, installation, API ke
 - Compact music player with a decorative record animation, seek control, volume, loading/error status and automatic track advancement. The record and decorative equalizer animate during playback; they are not an audio-amplitude visualizer.
 - Volume is remembered on the same browser when storage is available. Music never starts automatically.
 - Keyboard focus styles, skip link, labelled controls and operating-system reduced-motion support.
-- Active-section navigation and restrained hover lighting.
+- Active-section navigation that follows scrolling and keeps your chosen tab when Music and Links share a row; restrained hover lighting.
+- Larger touch targets for playback and volume, spoken time/volume values for screen readers, and touch rotation that distinguishes horizontal dragging from vertical page scrolling.
 - No remote scripts, stylesheets, fonts or image dependencies. External links require internet access.
 
 ## Music
@@ -34,7 +40,7 @@ Previous/next buttons appear when the configured playlist contains more than one
 
 - `index.html` — content, sections, links and credits.
 - `style.css` — appearance, depth effects and responsive layouts.
-- `scene.js` — X geometry, materials and mouse/keyboard/touch interaction.
+- `scene.js` — X geometry, orbit rings, pixel-heart geometry, materials and mouse/keyboard/touch interaction. Edit the `SOUL` array to change the heart's pixel shape, or `hearts` to change colours and orbits.
 - `app.js` — audio player and saved volume.
 - `interface.js` — panel hover lighting and navigation state.
 - `songs.js` — owner-configured audio playlist.
@@ -44,13 +50,6 @@ The existing GitHub and Discord destinations remain the supplied accounts. Chang
 
 ## Verification
 
-JavaScript syntax, all local asset references, unique IDs, fragment links, audio DOM references and link protections were checked. Simulated controls passed for no autoplay, volume persistence, seek progress, play/pause state, track looping, multiple-track navigation, empty playlists, playback failures and cancellation while loading. Simulated WebGL tests passed for mesh buffers, matrices, draw calls, mouse-follow rotation, keyboard and drag input, and unavailable-context fallback.
+JavaScript syntax, all local asset references, unique IDs, fragment links, audio DOM references and link protections were checked. Simulated controls passed for no autoplay, volume persistence, seek progress, play/pause state, track looping, multiple-track navigation, empty playlists, playback failures and cancellation while loading. Navigation checks passed for scroll tracking, shared rows, chosen tabs, responsive section ordering and hash changes. Simulated WebGL tests passed for mesh buffers, matrices, draw calls, mouse-follow rotation, keyboard and drag input, and unavailable-context fallback.
 
-This environment does not provide a live browser preview. Actual browser layout, GPU rendering and audible playback have not been verified here. Devices without WebGL see the SVG X fallback. Rendering sleeps while the X is offscreen or the browser tab is hidden.
-
-## v2 changes
-
-- The X now spins on its own, with two glowing satellites orbiting it on tilted rings. Mouse-follow and dragging still tilt it. Reduced-motion users get a still X.
-- Header: logo left, nav centred, GitHub / Discord / Roblox icon buttons right. Hero: "My projects" + "Find me online". Links section: icon cards.
-- Icons live in `assets/icons/` (`github.svg`, `discord.svg`, `roblox.svg`). To use your own, overwrite those three files with the same names.
-- The Roblox link is a placeholder (`https://www.roblox.com/`). Replace it in `index.html` (two places) with your profile URL.
+This environment does not provide a live browser preview. Actual browser layout, GPU rendering and audible playback have not been verified here. Devices without WebGL see the SVG X fallback. A lost graphics context also switches to that fallback without restarting the failed renderer. Rendering sleeps while the X is offscreen or the browser tab is hidden.

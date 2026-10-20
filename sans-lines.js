@@ -2,6 +2,7 @@
 window.SANS_LINES = {
   hello: "hey. i'm keeping an eye socket on the place.",
   scroll: "what do you wanna find down there?",
+  source: "Why do you want that?",
   talk: [
     "nice place. i was told there'd be a sitting section.",
     "those hearts have been running laps all day. couldn't be me.",

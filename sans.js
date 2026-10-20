@@ -10,7 +10,7 @@
   let timer = 0, closeTimer = 0, lockUntil = 0, lastScroll = window.scrollY;
   let lastReaction = -Infinity;
   const indexes = {};
-  function say(text, manual = false) {
+  function say(text, manual = false, stare = false) {
     if (!text) return;
     clearTimeout(timer); clearTimeout(closeTimer);
     bubble.hidden = false;
@@ -18,6 +18,7 @@
     visual.textContent = '';
     root.classList.add('speaking');
     root.classList.toggle('greeting', text === lines.hello);
+    root.classList.toggle('staring', stare);
     if (manual) lockUntil = Date.now() + 10000;
     let i = 0;
     function type() {
@@ -32,7 +33,7 @@
   function close() {
     clearTimeout(timer); clearTimeout(closeTimer);
     bubble.hidden = true;
-    root.classList.remove('speaking');
+    root.classList.remove('speaking', 'staring');
   }
   function choose(kind) {
     const options = lines[kind];
@@ -46,6 +47,7 @@
     button.addEventListener('click', () => choose(button.dataset.sans));
   });
   document.getElementById('sans-character').addEventListener('click', () => choose('talk'));
+  document.querySelectorAll('[data-sans-line]').forEach(el => el.addEventListener('click', () => { root.classList.remove('napping'); say(lines[el.dataset.sansLine], true, true); }));
   document.getElementById('sans-close').addEventListener('click', () => { close(); lockUntil = Date.now() + 10000; });
   root.addEventListener('keydown', event => { if (event.key === 'Escape') { close(); document.getElementById('sans-character').focus(); } });
   window.addEventListener('scroll', () => {

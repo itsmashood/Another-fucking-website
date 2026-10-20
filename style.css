@@ -49,3 +49,21 @@
 .link-initial.social-icon{padding:7px}.link-initial.social-icon img{width:100%;height:100%}
 @media(max-width:760px){.header{height:112px}.header-inner{display:grid;grid-template-columns:1fr auto;grid-template-rows:56px 44px;gap:0 12px;padding:4px 0 8px}.header-inner>.name{grid-column:1;grid-row:1;justify-self:start}.header-socials{grid-column:2;grid-row:1}.header-inner>nav{grid-column:1/-1;grid-row:2;justify-content:space-between;width:100%}.header-inner>nav a{flex:1;font-size:11px}.header-socials .social-icon{width:44px;height:44px}.header-socials{gap:5px}html{scroll-padding-top:130px}}
 @media(prefers-reduced-motion:reduce){.header-socials .social-icon:hover{transform:none}}
+
+/* ---- Roblox Lua scripts card: a button that only cracks ---- */
+.project.wide{grid-column:1/-1;padding:22px 26px;min-height:0}
+.project.wide .project-top{margin-bottom:16px}
+.wide-body{display:flex;align-items:center;gap:20px}
+.wide-text{flex:1;min-width:0}.wide-text h3{margin-bottom:6px}.wide-text p{margin:0;max-width:520px}
+.roblox-symbol img{width:24px;height:24px;opacity:.85}
+.crack-button{position:relative;overflow:hidden;flex-shrink:0;border:0;border-radius:6px;background:var(--text);color:#201821;font:600 12px/1.4 var(--sans);padding:14px 22px;box-shadow:0 4px 0 #b7aaba22;transition:transform .15s}
+.crack-button:active{transform:scale(.97)}
+.crack-label{position:relative;z-index:0}
+.crack-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:1}
+.crack-layer path{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:crack-draw .22s ease-out forwards}
+.crack-dark{stroke:#2a1830;stroke-width:1.5}.crack-light{stroke:#ffffffd0;stroke-width:1.2}.crack-layer .thin{stroke-width:.9}
+.crack-button.hit{animation:crack-shake .3s}
+@keyframes crack-draw{to{stroke-dashoffset:0}}
+@keyframes crack-shake{20%{transform:translate(-2px,1px) rotate(-.6deg)}40%{transform:translate(2px,-1px) rotate(.6deg)}60%{transform:translate(-1px,0)}80%{transform:translate(1px,1px)}}
+@media(max-width:540px){.wide-body{flex-wrap:wrap}.crack-button{width:100%}.project.wide{padding:20px}}
+@media(prefers-reduced-motion:reduce){.crack-layer path{stroke-dashoffset:0!important}}

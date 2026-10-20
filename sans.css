@@ -19,10 +19,12 @@
 #sans-character:hover .pose-idle{display:none}#sans-character:hover .pose-wave{display:block}
 .speaking #sans-character .pose-idle,.speaking #sans-character .pose-wave{display:none}.speaking #sans-character .pose-shrug{display:block}
 .speaking.greeting #sans-character .pose-shrug{display:none}.speaking.greeting #sans-character .pose-wave{display:block}
+/* Default idle sprite (with pupils) is 52x70 at 2x. */
+#sans-character .pose-idle{width:104px;height:140px;margin:4px 18px 0}
 /* Close-up stare sprite: shown only after the Roblox Lua button is pressed, until his bubble closes. */
 #sans-character .pose-stare{display:none;width:102px;height:144px;margin:0 19px}
-.staring #sans-character img{display:none}.staring #sans-character .pose-stare{display:block}
+.staring #sans-character .pose-idle,.staring #sans-character .pose-wave,.staring #sans-character .pose-shrug{display:none!important}.staring #sans-character .pose-stare{display:block!important}
 @keyframes sans-idle{50%{transform:translateY(-3px)}}@keyframes sans-talk{50%{transform:translateY(-2px) rotate(1deg)}}
 footer.page{padding-bottom:210px}
-@media(max-width:600px){#sans-companion{right:max(10px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));width:196px}#sans-character{width:105px;height:108px}#sans-character .pose-stare{width:77px;height:108px;margin:0 14px}.sans-dock{gap:4px}.sans-actions{gap:2px}.sans-actions button{min-width:64px;height:32px}#sans-bubble{bottom:126px;width:254px}#sans-bubble:after{right:114px}#sans-text{font-size:12px}.sans-actions button{font-size:11px}footer.page{padding-bottom:180px}}
+@media(max-width:600px){#sans-companion{right:max(10px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));width:196px}#sans-character{width:105px;height:108px}#sans-character .pose-stare{width:77px;height:108px;margin:0 14px}#sans-character .pose-idle{width:78px;height:105px;margin:3px 13px 0}.sans-dock{gap:4px}.sans-actions{gap:2px}.sans-actions button{min-width:64px;height:32px}#sans-bubble{bottom:126px;width:254px}#sans-bubble:after{right:114px}#sans-text{font-size:12px}.sans-actions button{font-size:11px}footer.page{padding-bottom:180px}}
 @media(prefers-reduced-motion:reduce){#sans-character img{animation:none!important}}

@@ -210,6 +210,7 @@
   canvas.addEventListener('dblclick',()=>{targetX=targetY=followX=followY=0;wake();});
   canvas.addEventListener('keydown',e=>{const keys=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'];if(!keys.includes(e.key))return;e.preventDefault();if(e.key==='ArrowLeft')targetX-=.18;if(e.key==='ArrowRight')targetX+=.18;if(e.key==='ArrowUp')targetY-=.18;if(e.key==='ArrowDown')targetY+=.18;if(e.key==='Home')targetX=targetY=followX=followY=0;wake();});
   reduced.addEventListener?.('change',e=>{paused=e.matches;last=0;wake();});
+  window.addEventListener('fate:start',()=>{visible=false;if(frame){cancelAnimationFrame(frame);frame=0;}});
   document.addEventListener('visibilitychange',()=>{last=0;if(!document.hidden)wake();});
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(frame);frame=0;last=0;}},{rootMargin:'150px'}).observe(shell);
   if('ResizeObserver' in window)new ResizeObserver(resize).observe(shell);else window.addEventListener('resize',resize);

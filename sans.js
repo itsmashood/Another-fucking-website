@@ -47,7 +47,19 @@
     button.addEventListener('click', () => choose(button.dataset.sans));
   });
   document.getElementById('sans-character').addEventListener('click', () => choose('talk'));
-  document.querySelectorAll('[data-sans-line]').forEach(el => el.addEventListener('click', () => { root.classList.remove('napping'); say(lines[el.dataset.sansLine], true, true); }));
+  const presses = {};
+  document.querySelectorAll('[data-sans-line]').forEach(el => el.addEventListener('click', () => {
+    if (window.__fateStarted) return;
+    root.classList.remove('napping');
+    const entry = lines[el.dataset.sansLine];
+    let text = entry;
+    if (Array.isArray(entry)) {
+      const count = presses[el.dataset.sansLine] = (presses[el.dataset.sansLine] || 0) + 1;
+      text = entry[Math.min(count, entry.length) - 1];
+      window.dispatchEvent(new CustomEvent('sans:line-press', { detail: { line: el.dataset.sansLine, count, total: entry.length, text } }));
+    }
+    say(text, true, true);
+  }));
   document.getElementById('sans-close').addEventListener('click', () => { close(); lockUntil = Date.now() + 10000; });
   root.addEventListener('keydown', event => { if (event.key === 'Escape') { close(); document.getElementById('sans-character').focus(); } });
   window.addEventListener('scroll', () => {

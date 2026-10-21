@@ -65,3 +65,10 @@ Edit `sans-lines.js` to change the greeting, scroll line or button dialogue. `sa
 ## Roblox Lua scripts card
 
 A wide card in Projects holds a button that does nothing on purpose. Every press draws a new crack from where you clicked (up to 14 stay on screen; reload to repair it) and Sans asks "Why do you want that?". Edit that line under `source` in `sans-lines.js`; the crack effect lives in `crack.js` and the end of `style.css`. Reduced-motion settings show cracks instantly with no shake.
+
+## The Lua button, Sans and the game
+
+- The blossom banner under the hero has been removed.
+- Pressing the **Source for my Roblox Lua scripts** button three times makes Sans say the three lines in `sans-lines.js` (`source`). Exactly 5 seconds after the third press the site is hidden and the game in `game/` fills the window (fire builds during the last 1.2s). Refreshing in the same tab goes straight back to the game; closing the tab resets it (`sessionStorage`, key `radia-fate`).
+- `game/` is the Bad Time Simulator (Sans fight) export you supplied (by natesway). Sans, Undertale and the game's sprites and music belong to Toby Fox and the game's author. The sequence is in `fate.js`.
+- The game, like any exported web game, only runs from a web server (your hosting, or `python -m http.server` in this folder). Opened straight from disk, the site shows a short message instead of the game.

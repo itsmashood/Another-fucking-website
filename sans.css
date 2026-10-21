@@ -21,7 +21,7 @@
 .speaking.greeting #sans-character .pose-shrug{display:none}.speaking.greeting #sans-character .pose-wave{display:block}
 /* Close-up stare sprite: shown only after the Roblox Lua button is pressed, until his bubble closes. */
 #sans-character .pose-stare{display:none;width:102px;height:144px;margin:0 19px}
-.staring #sans-character img{display:none}.staring #sans-character .pose-stare{display:block}
+#sans-companion.staring #sans-character img{display:none}#sans-companion.staring #sans-character .pose-stare{display:block}
 @keyframes sans-idle{50%{transform:translateY(-3px)}}@keyframes sans-talk{50%{transform:translateY(-2px) rotate(1deg)}}
 footer.page{padding-bottom:210px}
 @media(max-width:600px){#sans-companion{right:max(10px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));width:196px}#sans-character{width:105px;height:108px}#sans-character .pose-stare{width:77px;height:108px;margin:0 14px}.sans-dock{gap:4px}.sans-actions{gap:2px}.sans-actions button{min-width:64px;height:32px}#sans-bubble{bottom:126px;width:254px}#sans-bubble:after{right:114px}#sans-text{font-size:12px}.sans-actions button{font-size:11px}footer.page{padding-bottom:180px}}

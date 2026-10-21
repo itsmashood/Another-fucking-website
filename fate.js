@@ -14,16 +14,6 @@
     setTimeout(burn, FIRE_LEAD_IN);
   });
 
-  let resumed = false;
-  try { resumed = sessionStorage.getItem('radia-fate') === '1'; } catch (_) {}
-  if (resumed) {
-    // Hide the site straight away, then swap in the game once the page's own scripts have finished starting.
-    window.__fateStarted = true; scheduled = true;
-    document.documentElement.classList.add('fate', 'fate-resume');
-    const go = () => takeOver(null);
-    if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true });
-  }
-
   function burn() {
     window.__fateStarted = true;
     const overlay = document.createElement('div');
@@ -42,7 +32,6 @@
   }
 
   function takeOver(overlay) {
-    try { sessionStorage.setItem('radia-fate', '1'); } catch (_) {}
     window.dispatchEvent(new Event('fate:start'));
     document.querySelectorAll('audio').forEach(a => { try { a.pause(); } catch (_) {} });
     [...document.body.children].forEach(node => { if (node !== overlay) node.remove(); });

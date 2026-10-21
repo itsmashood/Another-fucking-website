@@ -39,4 +39,3 @@ footer.page{padding-bottom:210px}
 #fate-stage p{max-width:30em;margin:0 24px;color:#fff;font:15px/1.7 ui-monospace,Menlo,Consolas,monospace;text-align:center}
 html.fate,html.fate body{background:#000!important;overflow:hidden!important}
 @media(prefers-reduced-motion:reduce){#fate-overlay .fire,#fate-overlay .ember{animation:none!important}}
-html.fate-resume body>*{visibility:hidden!important}html.fate-resume body>#fate-stage{visibility:visible!important}

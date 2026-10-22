@@ -115,6 +115,7 @@
 		// This registers the service worker which caches resources for offline support.
 		window.C2_RegisterSW = function C2_RegisterSW()
 		{
+			return;		// offline caching switched off: it kept serving old copies of the game's files (e.g. the music)
 			if (!navigator.serviceWorker)
 				return;		// no SW support, ignore call
 			

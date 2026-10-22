@@ -75,3 +75,4 @@ A wide card in Projects holds a button that does nothing on purpose. Every press
 
 - The game's mode menu is skipped: once it has loaded, `fate.js` presses its confirm key so it starts straight on **Normal**.
 - Game audio: `game/media/intro_recording.ogg` (your recording) plays when each fight starts, during Sans's intro dialogue (`watchBattle` in `fate.js`). The game's own music file `game/media/mus_zz_megalovania.ogg` now holds the converted `mus_vsasgore.wav` (same name, so the game's own loop and pause/resume logic is unchanged); the game starts it after the dialogue.
+- The game's offline cache (service worker) is switched off, and `fate.js` clears any old one before loading the game. It used to keep serving old copies of the game's files, including the old music, to anyone who had already played.

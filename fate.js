@@ -58,6 +58,11 @@
     }, 200);
   }
 
+  async function clearGameCache() {
+    try { if (navigator.serviceWorker) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); } } catch (_) {}
+    try { if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.filter(k => /^c2offline/.test(k)).map(k => caches.delete(k))); } } catch (_) {}
+  }
+
   function press(win, key, code, keyCode) {
     const send = type => {
       const e = new win.KeyboardEvent(type, { key, code, bubbles: true, cancelable: true });
@@ -99,6 +104,9 @@
       // Browsers block this kind of game when a page is opened straight from disk.
       stage.innerHTML = '<p>* the game needs to run from a web server.<br>upload the site, or run <b>python -m http.server</b> in this folder and open localhost.</p>';
     } else {
+      // Older visits left a service worker + cache that keep serving the game's old files (old music).
+      // Clear them before the game loads.
+      clearGameCache().finally(() => {
       const frame = document.createElement('iframe');
       frame.title = 'Sans fight';
       frame.allow = 'autoplay; fullscreen; gamepad';
@@ -106,6 +114,7 @@
       frame.addEventListener('load', () => { try { frame.contentWindow.focus(); } catch (_) {} frame.focus(); skipMenu(frame); watchBattle(frame); });
       stage.appendChild(frame);
       stage.addEventListener('pointerdown', () => { try { frame.contentWindow.focus(); } catch (_) {} });
+      });
     }
     document.body.insertBefore(stage, overlay || null);
     if (!overlay) return;

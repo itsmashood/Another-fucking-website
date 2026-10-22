@@ -14,6 +14,61 @@
     setTimeout(burn, FIRE_LEAD_IN);
   });
 
+  // The game opens on a mode menu. Wait until it has finished loading, then press its confirm key
+  // (Z) once so it starts straight on "Normal", the menu's default.
+  function skipMenu(frame) {
+    let tries = 0;
+    const timer = setInterval(() => {
+      if (++tries > 400) return clearInterval(timer);            // give up after ~60s
+      try {
+        const win = frame.contentWindow, rt = win.cr_getC2Runtime && win.cr_getC2Runtime();
+        if (!rt || !rt.running_layout) return;
+        if (rt.running_layout.name !== 'MainMenu') return clearInterval(timer);   // already past it
+        let ready = false, loading = false;
+        rt.types_by_index.forEach(type => (type.instances || []).forEach(inst => {
+          if (typeof inst.text !== 'string') return;
+          if (inst.text === 'Normal') ready = true;
+          if (/^loading/i.test(inst.text)) loading = true;
+        }));
+        if (!ready || loading) return;
+        clearInterval(timer);
+        setTimeout(() => press(win, 'z', 'KeyZ', 90), 250);
+      } catch (_) { clearInterval(timer); }
+    }, 150);
+  }
+
+  // Sans's intro dialogue gets a voice recording. It starts with every new fight (the first one and
+  // each retry); the game's own music then begins right after the dialogue, as it always did.
+  function watchBattle(frame) {
+    let fight = null, voice = null;
+    setInterval(() => {
+      try {
+        const rt = frame.contentWindow.cr_getC2Runtime();
+        if (!rt || !rt.running_layout || rt.running_layout.name !== 'BattleScreen') return;
+        let hud = null;
+        rt.types_by_index.forEach(type => (type.instances || []).forEach(inst => {
+          if (hud === null && typeof inst.text === 'string' && /^CHARA/.test(inst.text)) hud = inst.uid;
+        }));
+        if (hud === null || hud === fight) return;   // not started yet, or the same fight
+        fight = hud;
+        if (voice) voice.pause();
+        voice = new Audio('game/media/intro_recording.ogg');
+        voice.play().catch(() => {});
+      } catch (_) {}
+    }, 200);
+  }
+
+  function press(win, key, code, keyCode) {
+    const send = type => {
+      const e = new win.KeyboardEvent(type, { key, code, bubbles: true, cancelable: true });
+      Object.defineProperty(e, 'keyCode', { get: () => keyCode });
+      Object.defineProperty(e, 'which', { get: () => keyCode });
+      win.document.dispatchEvent(e);
+    };
+    send('keydown');
+    setTimeout(() => send('keyup'), 120);
+  }
+
   function burn() {
     window.__fateStarted = true;
     const overlay = document.createElement('div');
@@ -48,7 +103,7 @@
       frame.title = 'Sans fight';
       frame.allow = 'autoplay; fullscreen; gamepad';
       frame.src = 'game/index.html';
-      frame.addEventListener('load', () => { try { frame.contentWindow.focus(); } catch (_) {} frame.focus(); });
+      frame.addEventListener('load', () => { try { frame.contentWindow.focus(); } catch (_) {} frame.focus(); skipMenu(frame); watchBattle(frame); });
       stage.appendChild(frame);
       stage.addEventListener('pointerdown', () => { try { frame.contentWindow.focus(); } catch (_) {} });
     }

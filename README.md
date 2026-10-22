@@ -72,3 +72,6 @@ A wide card in Projects holds a button that does nothing on purpose. Every press
 - Pressing the **Source for my Roblox Lua scripts** button three times makes Sans say the three lines in `sans-lines.js` (`source`). Exactly 5 seconds after the third press the site is hidden and the game in `game/` fills the window (fire builds during the last 1.2s). Refreshing the page brings the normal site back.
 - `game/` is the Bad Time Simulator (Sans fight) export you supplied (by natesway). Sans, Undertale and the game's sprites and music belong to Toby Fox and the game's author. The sequence is in `fate.js`.
 - The game, like any exported web game, only runs from a web server (your hosting, or `python -m http.server` in this folder). Opened straight from disk, the site shows a short message instead of the game.
+
+- The game's mode menu is skipped: once it has loaded, `fate.js` presses its confirm key so it starts straight on **Normal**.
+- Game audio: `game/media/intro_recording.ogg` (your recording) plays when each fight starts, during Sans's intro dialogue (`watchBattle` in `fate.js`). The game's own music file `game/media/mus_zz_megalovania.ogg` now holds the converted `mus_vsasgore.wav` (same name, so the game's own loop and pause/resume logic is unchanged); the game starts it after the dialogue.

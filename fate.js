@@ -19,7 +19,7 @@
   function skipMenu(frame) {
     let tries = 0;
     const timer = setInterval(() => {
-      if (++tries > 400) return clearInterval(timer);            // give up after ~60s
+      if (++tries > 400) { clearInterval(timer); return reveal(frame); }   // give up after ~60s: show whatever the game shows
       try {
         const win = frame.contentWindow, rt = win.cr_getC2Runtime && win.cr_getC2Runtime();
         if (!rt || !rt.running_layout) return;
@@ -33,7 +33,7 @@
         if (!ready || loading) return;
         clearInterval(timer);
         setTimeout(() => press(win, 'z', 'KeyZ', 90), 250);
-      } catch (_) { clearInterval(timer); }
+      } catch (_) { clearInterval(timer); reveal(frame); }
     }, 150);
   }
 
@@ -51,12 +51,16 @@
         }));
         if (hud === null || hud === fight) return;   // not started yet, or the same fight
         fight = hud;
+        reveal(frame);
         if (voice) voice.pause();
         voice = new Audio('game/media/intro_recording.ogg');
         voice.play().catch(() => {});
       } catch (_) {}
     }, 200);
   }
+
+  // The game's loading screen and mode menu stay hidden; the iframe is shown once the fight has started.
+  function reveal(frame) { frame.classList.add('ready'); }
 
   async function clearGameCache() {
     try { if (navigator.serviceWorker) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); } } catch (_) {}
@@ -111,7 +115,7 @@
       frame.title = 'Sans fight';
       frame.allow = 'autoplay; fullscreen; gamepad';
       frame.src = 'game/index.html';
-      frame.addEventListener('load', () => { try { frame.contentWindow.focus(); } catch (_) {} frame.focus(); skipMenu(frame); watchBattle(frame); });
+      frame.addEventListener('load', () => { try { frame.contentWindow.focus(); } catch (_) {} frame.focus(); skipMenu(frame); watchBattle(frame); setTimeout(() => reveal(frame), 25000); });
       stage.appendChild(frame);
       stage.addEventListener('pointerdown', () => { try { frame.contentWindow.focus(); } catch (_) {} });
       });

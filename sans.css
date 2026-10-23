@@ -35,7 +35,16 @@ footer.page{padding-bottom:210px}
 @keyframes fate-flicker{from{transform:scaleY(1);filter:brightness(1)}to{transform:scaleY(1.07) translateY(-1.5%);filter:brightness(1.3)}}
 @keyframes fate-ember{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-95vh)}}
 #fate-stage{position:fixed;inset:0;z-index:2147482000;background:#000;display:flex;align-items:center;justify-content:center}
-#fate-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+#fate-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;opacity:0}
+#fate-stage iframe.ready{opacity:1;transition:opacity .25s ease-out}
 #fate-stage p{max-width:30em;margin:0 24px;color:#fff;font:15px/1.7 ui-monospace,Menlo,Consolas,monospace;text-align:center}
 html.fate,html.fate body{background:#000!important;overflow:hidden!important}
 @media(prefers-reduced-motion:reduce){#fate-overlay .fire,#fate-overlay .ember{animation:none!important}}
+
+/* ---- The seven Undertale souls circle Sans. Everything stays flat 2D: same size, always upright. ---- */
+#sans-character .soul-ring{position:absolute;left:-30px;top:-5px;width:200px;height:150px;pointer-events:none;overflow:visible}
+#sans-character .soul{position:absolute;left:0;top:0;width:15px;height:15px;color:var(--c);image-rendering:pixelated;
+  offset-path:path('M 12 75 A 88 80 0 1 0 188 75 A 88 80 0 1 0 12 75 Z');offset-rotate:0deg;offset-distance:calc(var(--i) * 14.2857%);
+  animation:soul-orbit 9s linear calc(var(--i) * -1.2857s) infinite}
+@keyframes soul-orbit{to{offset-distance:100%}}
+@media(max-width:600px){#sans-character .soul-ring{left:-47px;top:-21px;transform:scale(.75)}}

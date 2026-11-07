@@ -2,35 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090712">
+  <meta name="description" content="A quiet space to reflect, talk and check in with yourself.">
   <title>TalkToMe</title>
 </head>
 <body>
-  <canvas id="universe"></canvas>
-
+  <div id="cityscape" aria-hidden="true"></div>
+  <div id="city-overlay" aria-hidden="true"></div>
+  <canvas id="universe" aria-hidden="true"></canvas>
   <header>
-    <a class="brand" href="/">talktome</a>
+    <a class="brand" href="/" aria-label="TalkToMe home">talktome</a>
     <button id="account" type="button">Backups</button>
   </header>
-
   <main>
     <div class="sculpture-space" aria-hidden="true"></div>
     <div id="status" role="status" hidden></div>
     <section id="conversation" aria-label="Conversation" aria-live="polite"></section>
-
     <form id="chat">
       <input id="message" placeholder="What's on your mind...?" maxlength="4000" autocomplete="off" required aria-label="Your message">
       <button id="mic" type="button" aria-label="Start voice input">◉</button>
       <button id="send" type="submit" aria-label="Send message">↑</button>
     </form>
   </main>
-
   <dialog id="panel">
-    <button id="close" class="close" aria-label="Close dialog">×</button>
+    <button id="close" class="close" type="button" aria-label="Close dialog">×</button>
     <div id="panel-content"></div>
   </dialog>
-
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

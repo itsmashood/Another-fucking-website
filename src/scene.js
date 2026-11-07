@@ -167,48 +167,6 @@ export function startScene(){
   orb.renderOrder = 10;
   scene.add(orb);
 
-  // denser ambient star network with connections that appear, shift and break over time
-  const STAR_COUNT = 260;
-  const MAX_SEGMENTS = 950;
-  const LINK_RADIUS = 1.9;
-  const ORB_LINK_RADIUS = 5.0;
-  const networkBounds = { x: 10, y: 7, zMin: -8, zMax: -2.4 };
-  const stars = Array.from({ length: STAR_COUNT }, () => ({
-    x: 0, y: 0, z: 0,
-    vx: (Math.random() - 0.5) * 0.018,
-    vy: (Math.random() - 0.5) * 0.016,
-    vz: (Math.random() - 0.5) * 0.008,
-    phase: Math.random() * Math.PI * 2
-  }));
-  const pointPositions = new Float32Array(STAR_COUNT * 3);
-  const pointGeometry = new THREE.BufferGeometry();
-  pointGeometry.setAttribute('position', new THREE.BufferAttribute(pointPositions, 3));
-  const pointCloud = new THREE.Points(
-    pointGeometry,
-    new THREE.PointsMaterial({ color:0xcab7ff, size:.024, transparent:true, opacity:.75, sizeAttenuation:true })
-  );
-  scene.add(pointCloud);
-
-  const linePositions = new Float32Array(MAX_SEGMENTS * 6);
-  const lineGeometry = new THREE.BufferGeometry();
-  lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-  lineGeometry.setDrawRange(0, 0);
-  const network = new THREE.LineSegments(
-    lineGeometry,
-    new THREE.LineBasicMaterial({ color:0x8a6fe0, transparent:true, opacity:.16 })
-  );
-  scene.add(network);
-
-  let networkSeeded = false;
-  function seedStars(){
-    for(const star of stars){
-      star.x = (Math.random() * 2 - 1) * networkBounds.x;
-      star.y = (Math.random() * 2 - 1) * networkBounds.y;
-      star.z = networkBounds.zMin + Math.random() * (networkBounds.zMax - networkBounds.zMin);
-    }
-    networkSeeded = true;
-  }
-
   // --- layout: orb centre/radius in CSS px (for cursor maths) ----------------
   let orbY = 0, cx = 0, cy = 0, rpx = 150;
   function resize(){
@@ -222,9 +180,6 @@ export function startScene(){
     const planeWorld = diameterPx/innerHeight*viewH*PAD;
     orb.scale.set(planeWorld, planeWorld, 1);
     orb.position.set(0, orbY, 0);
-    networkBounds.x = camera.aspect * viewH * 0.88;
-    networkBounds.y = viewH * 0.78;
-    if(!networkSeeded) seedStars();
   }
   addEventListener('resize', resize); addEventListener('scroll', resize, { passive:true }); resize();
 
@@ -271,68 +226,6 @@ export function startScene(){
       phase += dt*(1 + energy*2.2 + smooth.prox*0.6);
     }
 
-    const time = ms * 0.001;
-    const speed = dt * 60;
-    for(let i=0;i<STAR_COUNT;i++){
-      const star = stars[i];
-      star.x += (star.vx + Math.sin(time * 0.55 + star.phase) * 0.0026) * speed;
-      star.y += (star.vy + Math.cos(time * 0.48 + star.phase * 1.3) * 0.0021) * speed;
-      star.z += star.vz * speed;
-
-      if(star.x > networkBounds.x) star.x = -networkBounds.x;
-      if(star.x < -networkBounds.x) star.x = networkBounds.x;
-      if(star.y > networkBounds.y) star.y = -networkBounds.y;
-      if(star.y < -networkBounds.y) star.y = networkBounds.y;
-      if(star.z > networkBounds.zMax) star.z = networkBounds.zMin;
-      if(star.z < networkBounds.zMin) star.z = networkBounds.zMax;
-
-      pointPositions[i*3] = star.x;
-      pointPositions[i*3+1] = star.y;
-      pointPositions[i*3+2] = star.z;
-    }
-    pointGeometry.attributes.position.needsUpdate = true;
-
-    let segmentCount = 0;
-    const orbCentreY = orbY;
-    for(let i=0;i<STAR_COUNT && segmentCount < MAX_SEGMENTS;i++){
-      const a = stars[i];
-      let localLinks = 0;
-      for(let j=i+1;j<STAR_COUNT && segmentCount < MAX_SEGMENTS && localLinks < 4;j++){
-        const b = stars[j];
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const dz = a.z - b.z;
-        const d2 = dx*dx + dy*dy + dz*dz;
-        const crawl = 0.5 + 0.5*Math.sin(time * 1.35 + i * 0.31 + j * 0.18);
-        const radius = LINK_RADIUS * (0.78 + crawl * 0.65);
-        if(d2 < radius * radius){
-          const base = segmentCount * 6;
-          linePositions[base] = a.x;
-          linePositions[base+1] = a.y;
-          linePositions[base+2] = a.z;
-          linePositions[base+3] = b.x;
-          linePositions[base+4] = b.y;
-          linePositions[base+5] = b.z;
-          segmentCount++;
-          localLinks++;
-        }
-      }
-
-      const orbDistance = Math.hypot(a.x * 0.72, a.y - orbCentreY);
-      const tether = 0.5 + 0.5*Math.sin(time * 1.75 + i * 0.27);
-      if(segmentCount < MAX_SEGMENTS && orbDistance < ORB_LINK_RADIUS && tether > 0.56){
-        const base = segmentCount * 6;
-        linePositions[base] = a.x;
-        linePositions[base+1] = a.y;
-        linePositions[base+2] = a.z;
-        linePositions[base+3] = a.x * 0.18;
-        linePositions[base+4] = orbCentreY + (a.y - orbCentreY) * 0.18;
-        linePositions[base+5] = a.z * 0.12;
-        segmentCount++;
-      }
-    }
-    lineGeometry.setDrawRange(0, segmentCount * 2);
-    lineGeometry.attributes.position.needsUpdate = true;
     uniforms.uTime.value   = reduced ? 5.0 : phase + 5.0;
     uniforms.uActive.value = reduced ? 0 : smooth.act;
     uniforms.uProx.value   = smooth.prox;

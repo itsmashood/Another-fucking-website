@@ -1,120 +1,164 @@
-:root{
-  font-family:system-ui,-apple-system,sans-serif;
-  color:#f3efff;
-  background:#090712;
-  color-scheme:dark;
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f3efff;
+  background: #08050f;
+  color-scheme: dark;
 }
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh}
-#universe{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
-header{
-  padding:30px 5vw 10px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; min-height: 100vh; isolation: isolate; overflow-x: hidden; }
+
+/* Purple-tinted version of the supplied animated skyline. Always behind the orb. */
+#cityscape, #city-overlay, #universe {
+  position: fixed;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
 }
-.brand{
-  font-size:28px;
-  font-weight:700;
-  text-decoration:none;
-  color:inherit;
-  letter-spacing:-1px;
+#cityscape {
+  z-index: -3;
+  background: #08050f url('/assets/city-purple.gif') center 48% / cover no-repeat;
+  filter: blur(1.25px) saturate(.8);
+  transform: scale(1.025);
+  opacity: .62;
 }
-button{
-  cursor:pointer;
-  font:inherit;
-  color:inherit;
-  background:#ffffff08;
-  border:1px solid #ffffff20;
-  border-radius:24px;
-  padding:10px 18px;
+#city-overlay {
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 40% 37% at 50% 34%, rgba(12, 4, 28, .28), rgba(8, 5, 16, .76) 90%),
+    linear-gradient(180deg, rgba(8, 5, 15, .78) 0%, rgba(8, 5, 17, .36) 35%, rgba(8, 5, 16, .52) 68%, rgba(8, 5, 15, .90) 100%),
+    linear-gradient(90deg, rgba(18, 5, 30, .17), rgba(29, 10, 50, .15), rgba(7, 4, 19, .20));
 }
-button:hover{background:#b797ff25;border-color:#c8aaff70}
-button:disabled{opacity:.5;cursor:not-allowed}
-main{
-  width:min(760px, 92vw);
-  margin:0 auto 40px;
-  padding:0 0 10px;
-  text-align:center;
+#universe { z-index: -1; display: block; }
+
+header {
+  position: relative;
+  z-index: 1;
+  padding: 31px 5vw 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.sculpture-space{height:330px}
-#status{
-  font-size:12px;
-  color:#c5b4dd;
-  letter-spacing:.5px;
-  margin:0 0 14px;
-  min-height:18px;
+.brand {
+  color: #f7f1ff;
+  font-size: 27px;
+  font-weight: 740;
+  text-decoration: none;
+  letter-spacing: -1.2px;
 }
-#status[hidden]{display:none}
-#conversation{
-  max-height:260px;
-  overflow:auto;
-  text-align:left;
-  margin:0 auto 16px;
-  scrollbar-width:thin;
+button {
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  background: rgba(24, 16, 34, .65);
+  border: 1px solid rgba(238, 217, 255, .20);
+  border-radius: 26px;
+  padding: 10px 18px;
+  transition: border-color 160ms ease, background 160ms ease;
 }
-#conversation:empty{display:none}
-.bubble{
-  padding:12px 16px;
-  border-radius:18px;
-  background:#1a1224dd;
-  margin:8px 0;
-  font-size:14px;
-  line-height:1.6;
-  white-space:pre-wrap;
-  backdrop-filter:blur(10px);
+button:hover { background: rgba(105, 64, 151, .25); border-color: rgba(216, 180, 255, .50); }
+button:disabled { cursor: not-allowed; opacity: .55; }
+
+main {
+  position: relative;
+  z-index: 1;
+  width: min(760px, calc(100vw - 42px));
+  margin: 0 auto 38px;
+  text-align: center;
 }
-.bubble.user{
-  margin-left:14%;
-  background:#322145cc;
+.sculpture-space { height: clamp(275px, 39vh, 380px); }
+#status {
+  min-height: 16px;
+  margin: 0 0 12px;
+  color: #ccb8dc;
+  font-size: 12px;
 }
-#chat{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  background:#171020cf;
-  border:1px solid #ba91f644;
-  border-radius:30px;
-  padding:8px 10px 8px 22px;
-  backdrop-filter:blur(18px);
-  box-shadow:0 0 60px #9d52df18;
+#status[hidden] { display: none; }
+#conversation {
+  max-height: min(35vh, 300px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 4px 2px;
+  margin-bottom: 15px;
+  text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(195, 163, 236, .29) transparent;
 }
-input,textarea{
-  font:inherit;
-  color:inherit;
-  background:transparent;
-  border:0;
-  outline:none;
+#conversation:empty { display: none; }
+.bubble {
+  background: rgba(24, 15, 34, .86);
+  border: 1px solid rgba(239, 210, 255, .08);
+  padding: 13px 17px;
+  border-radius: 18px;
+  margin: 9px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  backdrop-filter: blur(13px);
 }
-#message{width:100%;min-width:0;font-size:15px}
-#message::placeholder{color:#9387a6}
-#send{
-  background:#d8c2ff;
-  color:#201331;
-  padding:8px 17px;
-  font-size:22px;
+.bubble.user {
+  background: rgba(56, 29, 79, .89);
+  border-color: rgba(234, 198, 255, .14);
+  margin-left: 13%;
 }
-#mic{padding:10px 14px}
-dialog{
-  background:#15101f;
-  color:#eee7fa;
-  border:1px solid #ae88dc55;
-  border-radius:24px;
-  width:min(520px,92vw);
-  padding:30px;
-  max-height:85vh;
+#chat {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  background: rgba(23, 14, 32, .88);
+  border: 1px solid rgba(210, 163, 252, .36);
+  border-radius: 35px;
+  padding: 8px 10px 8px 22px;
+  backdrop-filter: blur(19px);
+  box-shadow: 0 14px 70px rgba(14, 4, 32, .50);
 }
-dialog::backdrop{background:#030109bb;backdrop-filter:blur(8px)}
-dialog h2{font-weight:500;margin-top:0}
-dialog p{color:#b6a8c8;line-height:1.6;font-size:14px}
-.close{float:right;border:0;padding:2px 9px;font-size:24px}
-dialog button{margin:4px}
-dialog input{width:100%;padding:14px;margin:10px 0;background:#ffffff08;border:1px solid #ffffff22;border-radius:12px}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #ddbdff;outline-offset:3px}
-@media(max-width:600px){
-  header{padding:22px 20px 6px}
-  .brand{font-size:24px}
-  .sculpture-space{height:280px}
-  #chat{padding-left:16px}
-  #account{padding:9px 14px;font-size:13px}
+input, textarea {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+#message { flex: 1; width: 100%; min-width: 0; font-size: 15px; }
+#message::placeholder { color: #ac9eb8; opacity: 1; }
+#mic { padding: 10px 13px; border-radius: 50%; }
+#send { padding: 9px 17px; background: #dcc7ff; color: #281339; font-size: 22px; }
+#send:hover { background: #f0dfff; }
+
+#account { padding: 9px 17px; font-size: 12px; }
+dialog {
+  width: min(530px, 92vw);
+  max-height: 85vh;
+  padding: 29px;
+  background: #15101f;
+  color: #f3eafa;
+  border: 1px solid rgba(184, 139, 221, .40);
+  border-radius: 22px;
+}
+dialog::backdrop { background: rgba(3, 1, 10, .83); backdrop-filter: blur(9px); }
+dialog h2 { font-weight: 500; margin: 0 0 13px; }
+dialog p { color: #b9afc7; line-height: 1.55; font-size: 14px; }
+dialog button { margin: 5px 5px 5px 0; }
+.close { float: right; border: 0; font-size: 24px; line-height: 1; padding: 1px 9px; }
+.danger-button { color: #ffb0b7; }
+.disclaimer { border-top: 1px solid rgba(225, 193, 250, .15); margin-top: 22px; padding-top: 5px; }
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid #dfc4ff;
+  outline-offset: 3px;
+}
+@media(max-width: 600px) {
+  header { padding: 22px 20px 7px; }
+  .brand { font-size: 23px; }
+  .sculpture-space { height: min(36vh, 280px); }
+  main { width: calc(100vw - 32px); }
+  #chat { padding-left: 15px; }
+  #account { font-size: 12px; }
+  .bubble { font-size: 13px; }
+  #conversation { max-height: 41vh; }
+}
+@media(prefers-reduced-motion: reduce) {
+  #cityscape { background-image: url('/assets/city-purple-still.webp'); }
+  button { transition: none; }
 }

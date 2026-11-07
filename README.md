@@ -1,43 +1,43 @@
-# TalkToMe • browser edition
+# TalkToMe — Calm Skyline Edition
 
-A personal learning companion with a purple volumetric 3D orb, particles and connecting tracers. No AI API, account, database or environment variables are needed.
+A minimal self-reflection conversation website with a preserved volumetric purple Three.js orb, a violet city background, and on-device supportive responses. No API key or server database needed.
 
-## Run locally
+## Deploy to Vercel from GitHub (no local Node.js needed)
 
-Install Node.js 22 or later. Open a terminal in this folder and run:
+1. Extract this ZIP. Open the inner `talktome` folder.
+2. Create or open a GitHub repository. Upload **the contents** of `talktome` so `package.json`, `src/`, `public/`, and `index.html` are at the repository root.
+3. Import that repository at https://vercel.com/new. Use the **Vite** framework preset, `npm run build` build command, and `dist` output directory.
+4. Click Deploy. Vercel installs and builds automatically.
 
-```
-npm install
+If you already connected the repository to Vercel, committing the new files triggers a fresh deployment.
+
+### Optional local development
+
+```sh
+npm ci
 npm run dev
 ```
 
-Open the address printed in the terminal. Do not double-click index.html. For a production build run `npm run build`, then `npm run preview`.
+## Background
 
-## Publish to Vercel
+The default background is the user's original city animation, color-graded violet: `public/assets/city-purple.gif`.
 
-1. Create a GitHub repository and upload the contents of this folder. Keep package.json at the repository root. Exclude node_modules.
-2. In Vercel, import the repository and choose Vite.
-3. Use build command `npm run build` and output folder `dist`. No environment variables are needed.
-4. Deploy. Choose project name `talktome` if available. The address talktome.vercel.app has not been reserved.
+An alternate cinematic animation is included at `public/assets/city-purple-alternate.gif`. To switch, edit the `background:` line in `src/style.css` under `#cityscape`. No changes are necessary to the orb shader.
 
-Alternatively, the included `dist` folder is a ready-built static website for a static host. Hosting free-tier limits and terms apply. No subscriptions or paid integrations are part of the code.
+The moving line and dot network was removed to avoid visual clutter; the orb's shader, color palette and pointer/speaking interactions remain untouched.
 
-## Teach and remember
+## Conversation and safety
 
-- Click Teach me. Enter a question such as “What is my favourite colour?” and answer “Purple”. Save and ask that question in chat.
-- Or type “Remember my favourite colour is purple”. Ask “What is my favourite colour?” to retrieve the fact.
-- Unknown or ambiguous questions ask you to teach an answer. Clicking Teach me automatically fills the unknown question.
-- Memories supports editing, deleting, JSON export and import. Imports merge and skip exact duplicates. Old TalkToMe memory-array exports are supported.
-- Matching uses normalized words, exact questions and conservative word overlap. It handles colour/color and favourite/favorite. It does not have general reasoning or arbitrary language understanding. Conflicting equally scored lessons ask for teaching.
+- Responses are **rule-based**, not generative AI. They can misunderstand the context and are not reliable for detecting every crisis.
+- Supportive follow-ups cover regret, shame, panic, sadness, relationships, anger, stress, loss, sleep, loneliness, and uncertainty.
+- For self-harm language, responses start with acknowledgment and simple safety steps, ask about immediacy, and suggest urgent human help when someone may act soon or has already been harmed.
+- TalkToMe is **not a therapist, emergency responder or crisis service**. Test extensively with qualified experts before using it as a real-world mental health tool.
+- Conversations are stored only in localStorage in that browser. Browser clearing removes them; exports are available in Backups. History is not encrypted and not synced. No information is sent to a server by this app, though browser speech-to-text may use browser/provider services.
+- Microphone input depends on browser speech recognition support and permissions. WebGL is required for the orb.
 
-## Storage and privacy
+## Assets
 
-Lessons stay in localStorage on this browser and website address. There is no cloud sync. Clearing site data, losing the device or changing the website address can make lessons unavailable. Export backups regularly and import them on another device. Private browsing may discard data when closed. Storage is limited by the browser. A failed write displays an error rather than claiming the lesson was saved.
-
-The microphone uses browser speech recognition where supported. Browsers may send audio to their vendor's speech service. Review the transcript and press send yourself. Read aloud uses browser speech synthesis. Google opens only after you click Allow and search, and receives the query you enter. Results are not automatically read or learned. Text matching and memory storage run locally.
-
-The centerpiece is a purple volumetric 3D orb, ray-marched in a single GLSL fragment shader (see `src/scene.js`): folded translucent membranes with lighting and depth tinting that fade softly into the background with no hard outline. It tilts toward your cursor, is pulled and lit by it, swells on hover, ripples on click, and speeds up while you speak or listen. It lowers its resolution automatically on slow GPUs. Reduced-motion preferences freeze it and disable cursor reactions. Browser WebGL support is required.
-
-## Verify
-
-Teach a lesson, ask its question, reload and ask again. Export it, delete it and import your backup. Try an unknown question. Test voice permission and Google cancellation on your own browser. Build and memory logic checks are performed before packaging, while browser-specific microphone behavior depends on your device.
+- `src/scene.js`: the original shader and the background Three.js scene. Purple orb rendering code preserved.
+- `src/support.js`: scripted response patterns and safety check handling.
+- `src/main.js`: chat UI, local storage, voice input and backups.
+- `src/style.css`: background treatment and minimal interface.

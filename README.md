@@ -1,6 +1,6 @@
 # TalkToMe • browser edition
 
-A personal learning companion with a purple and white animated 3D sculpture, particles and connecting tracers. No AI API, account, database or environment variables are needed.
+A personal learning companion with a Siri-style animated orb, particles and connecting tracers. No AI API, account, database or environment variables are needed.
 
 ## Run locally
 
@@ -36,7 +36,7 @@ Lessons stay in localStorage on this browser and website address. There is no cl
 
 The microphone uses browser speech recognition where supported. Browsers may send audio to their vendor's speech service. Review the transcript and press send yourself. Read aloud uses browser speech synthesis. Google opens only after you click Allow and search, and receives the query you enter. Results are not automatically read or learned. Text matching and memory storage run locally.
 
-The centerpiece is a decorative folded 3D surface inspired by Calabi–Yau visualizations. It is not an exact higher-dimensional mathematical manifold. Reduced-motion preferences stop its animation. Browser WebGL support is required for the sculpture.
+The centerpiece is a Siri-style glass orb drawn by a single GLSL fragment shader (see `src/scene.js`): morphing translucent petals, crescent fins, a white-hot core and a glass rim. It swells and speeds up while you speak or listen. Reduced-motion preferences freeze it. Browser WebGL support is required.
 
 ## Verify
 

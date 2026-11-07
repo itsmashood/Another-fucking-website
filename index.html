@@ -1,1 +1,36 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090712"><title>TalkToMe · A little more you</title></head><body><canvas id="universe"></canvas><header><a class="brand" href="/">✳ talktome<span>YOUR LITTLE WORLD</span></a><button id="account">Sign in</button></header><main><div class="eyebrow">A LITTLE MORE YOU, EVERY DAY</div><h1>A little curiosity.<br>A world to teach.</h1><p class="intro">Start with a thought. Help me grow, one lesson at a time.</p><div class="sculpture-space" aria-hidden="true"></div><div id="status" role="status">Ready when you are</div><section id="conversation" aria-label="Conversation" aria-live="polite"></section><form id="chat"><input id="message" placeholder="Tell me something about your world…" maxlength="4000" autocomplete="off" required aria-label="Your message"><button id="mic" type="button" aria-label="Start voice input">◉</button><button id="send" aria-label="Send message">↑</button></form><nav><button id="teach">＋ Teach me</button><button id="memories">◇ Memories <span id="count">0</span></button><button id="search">↗ Google</button><label><input id="speak" type="checkbox"> Read aloud</label></nav><p class="footnote" id="mode">Personal memories, growing with you.</p></main><dialog id="panel"><button id="close" class="close" aria-label="Close dialog">×</button><div id="panel-content"></div></dialog><script type="module" src="/src/main.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090712">
+  <title>TalkToMe</title>
+</head>
+<body>
+  <canvas id="universe"></canvas>
+
+  <header>
+    <a class="brand" href="/">talktome</a>
+    <button id="account" type="button">Backups</button>
+  </header>
+
+  <main>
+    <div class="sculpture-space" aria-hidden="true"></div>
+    <div id="status" role="status" hidden></div>
+    <section id="conversation" aria-label="Conversation" aria-live="polite"></section>
+
+    <form id="chat">
+      <input id="message" placeholder="What's on your mind...?" maxlength="4000" autocomplete="off" required aria-label="Your message">
+      <button id="mic" type="button" aria-label="Start voice input">◉</button>
+      <button id="send" type="submit" aria-label="Send message">↑</button>
+    </form>
+  </main>
+
+  <dialog id="panel">
+    <button id="close" class="close" aria-label="Close dialog">×</button>
+    <div id="panel-content"></div>
+  </dialog>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

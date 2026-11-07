@@ -1,17 +1,15 @@
 import * as THREE from 'three';
 
 /*
-  Siri-style orb.
-  A single full-detail fragment shader draws a glass sphere containing:
-   - a dark, angular-gradient sphere body (teal / navy / indigo / crimson)
-   - 9 translucent morphing "petals" with soft fills, glowing edges and fine
-     topographic contour lines inside
-   - 4 thin crescent "fins" with bright filament edges
-   - a white-hot core with chromatic bloom, halo rings and needle streaks
-   - drifting cloud texture, glass fresnel rim, specular sheen, film grain
+  Purple plasma orb — a real volumetric 3D form.
+  A fragment shader ray-marches a density field made of thin, folded membranes
+  (iso-bands of 3D noise, domain-warped), lit from the upper left, depth-tinted
+  (front = lavender/orchid, back = indigo/blue) and fading smoothly to nothing,
+  so there is no hard outline. The orb tilts toward the cursor, is pulled and
+  lit by it, swells on hover, and ripples on click.
 */
 
-const PAD = 1.35; // plane is PAD x the orb radius so the outer glow has room
+const PAD = 1.35;   // plane is PAD x orb radius; the form itself fades out by r = 1.2
 
 const vertexShader = /* glsl */`
 varying vec2 vUv;
@@ -22,263 +20,227 @@ const fragmentShader = /* glsl */`
 precision highp float;
 varying vec2 vUv;
 uniform float uTime;
-uniform float uActive;
-uniform float uPx;      // size of one screen pixel in orb units
-
-#define PI 3.14159265359
+uniform float uActive;   // speaking / listening 0..1
+uniform float uProx;     // cursor proximity 0..1
+uniform float uHover;    // cursor over the orb 0..1
+uniform float uPulse;    // click ripple 1..0
+uniform vec2  uMouse;    // cursor in orb units (+x right, +y up)
 
 float hash21(vec2 p){ p = fract(p*vec2(123.34, 456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
-float vnoise(vec2 p){
-  vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
-  return mix(mix(hash21(i), hash21(i+vec2(1,0)), f.x),
-             mix(hash21(i+vec2(0,1)), hash21(i+vec2(1,1)), f.x), f.y);
+float hash31(vec3 p){ p = fract(p*0.1031); p += dot(p, p.yzx + 33.33); return fract((p.x + p.y)*p.z); }
+float noise3(vec3 x){
+  vec3 i = floor(x), f = fract(x);
+  f = f*f*(3.0 - 2.0*f);
+  return mix(mix(mix(hash31(i),                 hash31(i + vec3(1,0,0)), f.x),
+                 mix(hash31(i + vec3(0,1,0)),   hash31(i + vec3(1,1,0)), f.x), f.y),
+             mix(mix(hash31(i + vec3(0,0,1)),   hash31(i + vec3(1,0,1)), f.x),
+                 mix(hash31(i + vec3(0,1,1)),   hash31(i + vec3(1,1,1)), f.x), f.y), f.z);
 }
-float fbm(vec2 p){
-  float s = 0.0, a = 0.5;
-  mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for(int i=0;i<5;i++){ s += a*vnoise(p); p = m*p; a *= 0.5; }
-  return s;
-}
+mat3 rotY(float a){ float c = cos(a), s = sin(a); return mat3(c,0.,-s, 0.,1.,0., s,0.,c); }
+mat3 rotX(float a){ float c = cos(a), s = sin(a); return mat3(1.,0.,0., 0.,c,s, 0.,-s,c); }
 
-// Morphing closed blob. Returns normalised signed distance (negative inside).
-float shape(vec2 p, vec2 c0, vec2 orbit, float R, float seed, float spd, float t, float act, out vec2 q){
-  vec2 c = c0 + orbit*vec2(sin(t*spd*0.7 + seed*5.0), cos(t*spd*0.9 + seed*3.0));
-  q = p - c;
-  float r = length(q);
-  float th = atan(q.y, q.x);
-  float w = 0.30*sin(2.0*th + t*spd*1.1 + seed*6.1)
-          + 0.19*sin(3.0*th - t*spd*1.5 + seed*3.7)
-          + 0.06*sin(4.0*th + t*spd*0.8 + seed*8.3)
-          + 0.025*sin(6.0*th - t*spd*2.1 + seed*1.9);
-  w *= 1.0 + act*0.55;
-  float Rr = R*(1.0 + w)*(1.0 + act*0.07*sin(t*2.6 + seed*7.0));
-  return (r - Rr)/R;
+vec3 pal(float x){
+  vec3 a = vec3(0.09, 0.03, 0.36);   // deep indigo
+  vec3 b = vec3(0.40, 0.15, 0.94);   // violet
+  vec3 c = vec3(0.76, 0.40, 1.00);   // orchid
+  vec3 d = vec3(0.98, 0.90, 1.00);   // lavender white
+  x = clamp(x, 0.0, 1.0);
+  return x < 0.34 ? mix(a, b, x/0.34) : x < 0.67 ? mix(b, c, (x-0.34)/0.33) : mix(c, d, (x-0.67)/0.33);
 }
 
-// A translucent petal: soft fill, glowing edge, inner contour lines.
-vec3 petal(vec2 p, vec2 c0, vec2 orbit, float R, float seed, float spd,
-           vec3 col, float t, float act, vec2 core, float cloud){
-  vec2 q;
-  float d = shape(p, c0, orbit, R, seed, spd, t, act, q);
-  float aa = uPx/R*1.5;
-  float body  = 1.0 - smoothstep(-aa, aa, d);
-  float depth = clamp(-d, 0.0, 1.0);
-
-  // brightness rises toward the shared core
-  float toCore = exp(-dot(p-core, p-core)*3.2);
-
-  vec3 e = vec3(0.0);
-  e += col*body*(0.14 + 0.40*pow(depth, 0.7))*(0.55 + 0.9*cloud);
-  e += col*body*toCore*0.34;
-  // luminous edge: tight bright line + wider soft glow, both sides
-  e += col*exp(-abs(d)*44.0)*0.62;
-  e += col*exp(-max( d,0.0)*9.0)*0.10;
-  e += col*exp(-max(-d,0.0)*8.0)*0.17*body;
-  // fine topographic contours inside the petal
-  float rings = pow(0.5 + 0.5*sin(d*62.0 - t*0.9 + seed*10.0), 7.0);
-  e += col*body*rings*0.15*smoothstep(0.0, 0.25, depth);
-  float rings2 = pow(0.5 + 0.5*sin(d*23.0 + t*0.5 + seed*4.0), 10.0);
-  e += mix(col, vec3(1.0), 0.5)*body*rings2*0.10*smoothstep(0.1, 0.5, depth);
-  return e;
-}
-
-// Thin translucent crescent (inside A, outside shifted B) with filament edges.
-vec3 fin(vec2 p, vec2 c0, vec2 orbit, float R, float seed, float spd,
-         vec2 shift, float shrink, vec3 col, float t, float act){
-  vec2 qa, qb;
-  float da = shape(p, c0, orbit, R, seed, spd, t, act, qa);
-  float db = shape(p, c0 + shift, orbit, R*shrink, seed + 0.17, spd, t, act, qb);
-  float aa = uPx/R*1.5;
-  float inA  = 1.0 - smoothstep(-aa, aa, da);
-  float outB = smoothstep(-aa, aa, db);
-  float cres = inA*outB;
-  vec3 e = col*cres*0.55;
-  e += col*exp(-abs(da)*70.0)*0.45*outB;
-  e += mix(col, vec3(1.0), 0.45)*exp(-abs(db)*80.0)*0.40*inA;
-  e += col*exp(-abs(da)*10.0)*0.06;
-  return e;
-}
-
-vec3 sphereBase(vec2 p, float r, float t){
-  float th = atan(p.y, p.x);
-  float a0 = t*0.035;
-  vec3 teal   = vec3(0.00, 0.52, 0.55);
-  vec3 navy   = vec3(0.012, 0.016, 0.075);
-  vec3 violet = vec3(0.20, 0.07, 0.40);
-  vec3 indigo = vec3(0.14, 0.17, 0.52);
-  vec3 crim   = vec3(0.70, 0.02, 0.20);
-  vec3 plum   = vec3(0.36, 0.03, 0.30);
-  float wTeal = pow(0.5+0.5*cos(th-(2.55+a0)), 3.0);
-  float wNavy = pow(0.5+0.5*cos(th-(1.45+a0)), 3.0);
-  float wVio  = pow(0.5+0.5*cos(th-(0.70+a0)), 3.0);
-  float wInd  = pow(0.5+0.5*cos(th-(-0.15+a0)), 3.0);
-  float wCrim = pow(0.5+0.5*cos(th-(-1.55+a0)), 3.0);
-  float wPlum = pow(0.5+0.5*cos(th-(-2.55+a0)), 3.0);
-  float ws = wTeal+wNavy+wVio+wInd+wCrim+wPlum+1e-3;
-  vec3 c = (teal*wTeal + navy*wNavy + violet*wVio + indigo*wInd + crim*wCrim + plum*wPlum)/ws;
-  float lum = 0.12 + 0.85*pow(r, 2.0);
-  return c*lum;
+// Density of the form at object-space point p.
+float field(vec3 p, float t, float en, bool fine){
+  float r = length(p);
+  // flowing sine-warp: cheap and smooth
+  vec3 q = p + (0.30 + 0.12*en)*sin(p.yzx*1.9 + t*vec3(0.31, 0.24, 0.19) + vec3(0.0, 1.7, 3.1))
+             + 0.13*sin(p.zxy*3.7 - t*vec3(0.22, 0.28, 0.17) + vec3(2.0, 0.4, 5.0));
+  float n1 = noise3(q*1.85 + vec3(0.0, t*0.07, 0.0));
+  float sheet1 = pow(1.0 - abs(2.0*n1 - 1.0), 8.0);          // broad membranes
+  float n2 = noise3(q*3.9 - vec3(t*0.05, 0.0, 11.0));
+  float sheet2 = pow(1.0 - abs(2.0*n2 - 1.0), 13.0);          // finer veils
+  float d = sheet1*1.25 + sheet2*0.80;
+  if(fine){
+    float n3 = noise3(q*8.3 + vec3(3.0, t*0.04, 0.0));
+    d += pow(1.0 - abs(2.0*n3 - 1.0), 18.0)*0.45;            // filaments
+  }
+  float env = smoothstep(1.12, 0.42, r);                      // soft falloff, no outline
+  float body = exp(-r*r*4.0)*0.22;                            // luminous volume
+  // click ripple: a travelling shell of extra density
+  float ring = exp(-pow(r - (1.05 - uPulse*0.95), 2.0)*55.0)*uPulse*1.1;
+  return env*(d + body) + ring*env;
 }
 
 void main(){
-  vec2 p = (vUv - 0.5)*2.0*${PAD.toFixed(3)};
-  float r = length(p);
+  vec2 xy = (vUv - 0.5)*2.0*${PAD.toFixed(3)};
+  float rho = length(xy);
   float t = uTime;
-  float act = uActive;
+  float en = max(uActive, uHover*0.75 + uProx*0.2);
 
-  // gentle organic domain warp (keeps silhouettes alive, not wobbly)
-  vec2 wp = p + 0.022*vec2(fbm(p*2.6 + t*0.10) - 0.5, fbm(p*2.6 + 7.3 - t*0.09) - 0.5);
-  float cloud = fbm(wp*2.4 + vec2(t*0.06, -t*0.045));
+  vec3 L = normalize(vec3(-0.45, 0.55, -0.70));     // viewer is at -z
+  vec3 ml = vec3(uMouse, -0.55);                    // cursor light, in view space
 
-  vec2 core = vec2(0.015*sin(t*0.55), -0.02 + 0.03*cos(t*0.43));
-  core *= 1.0 + act*2.0;
+  // soft atmospheric halo that carries the form out into the background
+  float haloMask = smoothstep(${PAD.toFixed(3)}, 0.9, rho);
+  vec3 halo = vec3(0.34, 0.14, 0.78)*exp(-rho*rho*3.2)*0.10*(1.0 + en*1.2 + uProx*0.8);
+  halo += vec3(0.60, 0.40, 1.0)*exp(-rho*rho*14.0)*0.05*(1.0 + uProx);
+  halo *= haloMask*haloMask;
 
-  vec3 em = vec3(0.0);
+  vec3 col = vec3(0.0);
+  float T = 1.0;
 
-  // --- petals: colour, position, size, seed, speed -------------------------
-  vec3 cyan   = vec3(0.00, 0.95, 1.00);
-  vec3 mint   = vec3(0.10, 0.88, 0.62);
-  vec3 azure  = vec3(0.10, 0.52, 1.00);
-  vec3 sky    = vec3(0.35, 0.78, 1.00);
-  vec3 violet = vec3(0.64, 0.38, 1.00);
-  vec3 purple = vec3(0.48, 0.18, 0.95);
-  vec3 pink   = vec3(1.00, 0.22, 0.60);
-  vec3 rose   = vec3(1.00, 0.36, 0.52);
-  vec3 red    = vec3(0.95, 0.08, 0.30);
+  if(rho < 1.25){
+    // orientation: slow spin + tilt toward the cursor
+    vec2 look = clamp(uMouse/2.6, -0.5, 0.5);
+    mat3 R = rotX(-look.y*0.9 + 0.22*sin(t*0.17)) * rotY(t*0.13 + look.x*0.9);
+    vec3 Lo = R*L;
+    float swell = 1.0 - 0.09*uHover - 0.04*uProx - 0.05*uActive*sin(t*3.0);   // <1 = larger form
 
-  em += petal(wp, vec2(-0.22, 0.20), vec2(0.07, 0.06), 0.30, 0.11, 0.42, cyan,   t, act, core, cloud);
-  em += petal(wp, vec2( 0.22, 0.22), vec2(0.06, 0.07), 0.31, 0.37, 0.36, violet, t, act, core, cloud);
-  em += petal(wp, vec2( 0.34, 0.00), vec2(0.06, 0.08), 0.25, 0.53, 0.48, azure,  t, act, core, cloud);
-  em += petal(wp, vec2(-0.14,-0.24), vec2(0.08, 0.06), 0.32, 0.71, 0.33, pink,   t, act, core, cloud);
-  em += petal(wp, vec2( 0.10,-0.34), vec2(0.07, 0.05), 0.25, 0.89, 0.45, red,    t, act, core, cloud);
-  em += petal(wp, vec2(-0.36,-0.02), vec2(0.06, 0.07), 0.21, 0.23, 0.52, mint,   t, act, core, cloud);
-  em += petal(wp, vec2( 0.02, 0.36), vec2(0.07, 0.04), 0.20, 0.63, 0.40, purple, t, act, core, cloud);
-  em += petal(wp, vec2( 0.26,-0.20), vec2(0.06, 0.06), 0.21, 0.47, 0.38, sky,    t, act, core, cloud);
-  em += petal(wp, vec2(-0.04, 0.00), vec2(0.09, 0.09), 0.26, 0.97, 0.30, rose,   t, act, core, cloud)*0.40;
+    float zmax = sqrt(max(1.5625 - rho*rho, 0.0));
+    const int N = 52;
+    float dt = 2.0*zmax/float(N);
+    float z = -zmax + dt*hash21(gl_FragCoord.xy*1.37);
 
-  // --- thin crescent fins -----------------------------------------------------
-  em += fin(wp, vec2(-0.30,-0.06), vec2(0.07, 0.05), 0.46, 0.19, 0.30, vec2( 0.09,-0.07), 0.82, mint,   t, act);
-  em += fin(wp, vec2( 0.10, 0.26), vec2(0.06, 0.06), 0.48, 0.43, 0.27, vec2(-0.08,-0.08), 0.82, cyan,   t, act);
-  em += fin(wp, vec2( 0.22,-0.10), vec2(0.05, 0.07), 0.44, 0.67, 0.33, vec2(-0.09, 0.07), 0.83, azure,  t, act);
+    for(int i = 0; i < N; i++){
+      vec3 pw = vec3(xy, z);
+      // cursor pulls the form toward itself
+      vec3 dm = ml - pw;
+      float g = exp(-dot(dm, dm)*2.2)*(uProx*0.6 + uHover*0.4);
+      pw += dm*g*0.30;
+      vec3 p = R*pw*swell;
 
-  // keep emission inside the sphere body and fade it toward the rim
-  em *= smoothstep(0.98, 0.70, r);
+      float dens = field(p, t, en, true);
+      if(dens > 0.004){
+        float dens2 = field(p + Lo*0.11, t, en, false);
+        float lit = clamp(1.0 + (dens - dens2)*3.2, 0.25, 2.0);           // facing the light → brighter
+        float s = (z + zmax)/(2.0*zmax);                                    // 0 front .. 1 back
+        float r = length(p);
 
-  // --- white-hot core ---------------------------------------------------------
-  vec2 cp = p - core;
-  float cr = length(cp);
-  float ang = atan(cp.y, cp.x);
-  float coreI = exp(-cr*cr*12.0)*1.15 + exp(-cr*cr*60.0)*1.5 + exp(-cr*2.8)*0.12;
-  coreI *= 1.0 + act*0.5*(0.5 + 0.5*sin(t*3.1));
-  vec3 coreCol = vec3(1.0, 0.97, 1.0)*coreI;
-  // chromatic bloom: cool outer, warm outer-outer
-  coreCol += vec3(0.25, 0.75, 1.0)*exp(-pow(cr-0.20, 2.0)*55.0)*0.22;
-  coreCol += vec3(1.00, 0.30, 0.75)*exp(-pow(cr-0.34, 2.0)*45.0)*0.14;
-  coreCol += vec3(0.55, 0.30, 1.00)*exp(-pow(cr-0.50, 2.0)*40.0)*0.08;
-  // soft star streaks
-  float st = pow(abs(sin(ang*3.0 + t*0.22)), 30.0)*exp(-cr*3.6)*0.30
-           + pow(abs(sin(ang*5.0 - t*0.17 + 1.3)), 40.0)*exp(-cr*4.6)*0.20;
-  coreCol += vec3(0.85, 0.9, 1.0)*st;
-  // two thin needle filaments
-  float n1 = exp(-abs(sin(ang - 1.25 - t*0.05))*95.0)*smoothstep(0.62, 0.05, cr)*0.55;
-  float n2 = exp(-abs(sin(ang + 2.35 + t*0.04))*110.0)*smoothstep(0.50, 0.05, cr)*0.35;
-  coreCol += vec3(1.0, 0.55, 0.75)*n1 + vec3(0.55, 0.9, 1.0)*n2;
-  em += coreCol;
+        float coreG = exp(-r*r*8.0);
+        float mouseL = exp(-dot(dm, dm)*5.5)*uProx*1.2;
+        float x = 0.14 + 0.42*clamp(dens, 0.0, 1.3) + 0.22*(lit - 0.6) + 0.55*coreG + 0.55*mouseL + 0.06*uPulse;
+        vec3 c = pal(x);
+        // depth tint: back sheets drift toward blue-indigo, front catches a touch of magenta
+        c = mix(c, vec3(0.20, 0.30, 0.95), smoothstep(0.45, 1.0, s)*0.28);
+        c = mix(c, vec3(0.95, 0.30, 0.85), smoothstep(0.55, 0.0, s)*0.12*lit);
+        c *= mix(0.55, 1.08, 1.0 - s*0.85);
 
-  // --- compose inside sphere --------------------------------------------------
-  vec3 base = sphereBase(p, r, t);
-  // faint volumetric haze that picks up the base hues
-  base += base*0.9*fbm(wp*3.0 - t*0.05)*smoothstep(0.1, 0.9, r)*0.5;
-  vec3 col = 1.0 - (1.0 - base)*exp(-em*1.05);   // screen-like, desaturates to white at high energy
+        float a = dens*dt*5.0;
+        col += T*c*a*(0.85 + 0.45*lit + coreG*1.1 + mouseL*1.5);
+        T *= exp(-a*0.85);
+        if(T < 0.02) break;
+      }
+      z += dt;
+    }
+  }
 
-  // glass: inner rim, fresnel, specular sheen
-  float rimLine = smoothstep(0.90, 0.995, r)*(1.0 - smoothstep(0.995, 1.002, r));
-  col += sphereBase(p, 1.0, t)*rimLine*0.32;
-  col += vec3(0.55, 0.60, 0.95)*pow(smoothstep(0.55, 1.0, r), 3.0)*0.04;
-  vec2 hp = (p - vec2(-0.34, 0.50))*vec2(1.0, 1.9);
-  col += vec3(0.8, 0.9, 1.0)*exp(-dot(hp, hp)*7.0)*0.10*smoothstep(1.0, 0.8, r);
-  vec2 hp2 = (p - vec2(0.38, -0.55))*vec2(1.6, 1.0);
-  col += vec3(1.0, 0.5, 0.7)*exp(-dot(hp2, hp2)*10.0)*0.06*smoothstep(1.0, 0.8, r);
+  vec3 outc = 1.0 - exp(-col*1.05);        // filmic roll-off → highlights go lavender-white
+  outc += halo;
+  float alpha = clamp(1.0 - T, 0.0, 1.0)*0.9;
 
-  // --- mask + outer aura ------------------------------------------------------
-  float aa = max(uPx*1.2, 0.0015);
-  float m = 1.0 - smoothstep(1.0 - aa, 1.0 + aa, r);
-  float edgeFade = smoothstep(${PAD.toFixed(3)}, 1.0, r);
-  vec3 aura = sphereBase(p, 1.0, t)*1.0*exp(-max(r - 1.0, 0.0)*8.0)*0.26*(1.0 + act*0.7);
-  aura += vec3(0.5, 0.4, 0.95)*exp(-max(r - 1.0, 0.0)*3.5)*0.035;
-  aura *= edgeFade*edgeFade;
-  vec3 outc = col*m + aura*(1.0 - m);
+  // dither
+  outc += (hash21(gl_FragCoord.xy + 17.0) - 0.5)/255.0*smoothstep(0.0, 0.1, alpha + length(halo));
 
-  // dither against banding on dark gradients
-  outc += (hash21(gl_FragCoord.xy + fract(t)*61.0) - 0.5)/200.0*m;
-
-  gl_FragColor = vec4(max(outc, 0.0), m);
+  gl_FragColor = vec4(max(outc, 0.0), alpha);
 }
 `;
 
 export function startScene(){
   const canvas = document.querySelector('#universe');
   let renderer;
-  try{ renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); }catch{ return ()=>{}; }
-  const dpr = Math.min(devicePixelRatio || 1, 2);
+  try{ renderer = new THREE.WebGLRenderer({ canvas, antialias:false, alpha:true, powerPreference:'high-performance' }); }catch{ return ()=>{}; }
+  let dpr = Math.min(devicePixelRatio || 1, 1.75);
   renderer.setPixelRatio(dpr);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
   camera.position.z = 12;
-  const viewH = 2*12*Math.tan(20*Math.PI/180); // world height visible at z=0
+  const viewH = 2*12*Math.tan(20*Math.PI/180);
 
-  // --- the orb ---------------------------------------------------------------
-  const uniforms = { uTime:{ value:0 }, uActive:{ value:0 }, uPx:{ value:0.004 } };
-  const orbMaterial = new THREE.ShaderMaterial({
-    uniforms, vertexShader, fragmentShader,
-    transparent:true, depthWrite:false, depthTest:false, premultipliedAlpha:true
-  });
-  const orb = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), orbMaterial);
+  const uniforms = {
+    uTime:{ value:0 }, uActive:{ value:0 }, uProx:{ value:0 }, uHover:{ value:0 },
+    uPulse:{ value:0 }, uMouse:{ value:new THREE.Vector2(9, 9) }
+  };
+  const orb = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader, transparent:true, depthWrite:false, depthTest:false, premultipliedAlpha:true })
+  );
   orb.renderOrder = 10;
   scene.add(orb);
 
-  // --- ambient field: faint particles + tracers that converge on the orb ------
+  // faint particles + tracers that converge on the orb
   const points = [], paths = [];
   for(let i=0;i<180;i++){
     const x=(Math.random()-.5)*20, y=(Math.random()-.5)*14, z=-3-Math.random()*5;
     points.push(x,y,z); if(i%9===0) paths.push(x,y,z,0,0,0);
   }
   const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.Float32BufferAttribute(points,3));
-  scene.add(new THREE.Points(pg, new THREE.PointsMaterial({ color:0xb9a9ee, size:.025, transparent:true, opacity:.55 })));
+  scene.add(new THREE.Points(pg, new THREE.PointsMaterial({ color:0xb9a0f0, size:.025, transparent:true, opacity:.55 })));
   const lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.Float32BufferAttribute(paths,3));
-  const lines = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color:0x8a7fd0, transparent:true, opacity:.10 }));
+  const lines = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color:0x8a6fe0, transparent:true, opacity:.10 }));
   scene.add(lines);
   const tracerGeometry = new THREE.BufferGeometry();
   const tracerPositions = new Float32Array(paths.length/2);
   tracerGeometry.setAttribute('position', new THREE.BufferAttribute(tracerPositions,3));
-  scene.add(new THREE.Points(tracerGeometry, new THREE.PointsMaterial({ color:0xdfe6ff, size:.05 })));
+  scene.add(new THREE.Points(tracerGeometry, new THREE.PointsMaterial({ color:0xe6d9ff, size:.05 })));
 
-  let orbY = 0;
+  // --- layout: orb centre/radius in CSS px (for cursor maths) ----------------
+  let orbY = 0, cx = 0, cy = 0, rpx = 150;
   function resize(){
     renderer.setSize(innerWidth, innerHeight);
     camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
     const rect = document.querySelector('.sculpture-space').getBoundingClientRect();
-    orbY = (.5 - (rect.top + rect.height/2)/innerHeight)*viewH;
-    // orb diameter = the reserved box height (capped so it never overlaps the headline)
-    const diameterPx = Math.min(rect.height, innerWidth*0.9);
-    const diameterWorld = diameterPx/innerHeight*viewH;
-    const planeWorld = diameterWorld*PAD;
+    cx = rect.left + rect.width/2; cy = rect.top + rect.height/2;
+    orbY = (.5 - cy/innerHeight)*viewH;
+    const diameterPx = Math.min(rect.height*1.2, innerWidth*0.95);
+    rpx = diameterPx/2;
+    const planeWorld = diameterPx/innerHeight*viewH*PAD;
     orb.scale.set(planeWorld, planeWorld, 1);
     orb.position.set(0, orbY, 0);
     lines.position.y = orbY;
-    uniforms.uPx.value = 2*PAD/(planeWorld/viewH*innerHeight); // one CSS pixel in orb units
   }
   addEventListener('resize', resize); addEventListener('scroll', resize, { passive:true }); resize();
 
-  let active = false, activeSmooth = 0, phase = 0, last = 0;
+  // --- cursor ----------------------------------------------------------------
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const target = { x:9, y:9 };            // cursor in orb units
+  let pulse = 0;
+  function setPointer(e){ target.x = (e.clientX - cx)/rpx; target.y = -(e.clientY - cy)/rpx; }
+  function leave(){ target.x = target.y = 9; }
+  if(!reduced){
+    addEventListener('pointermove', setPointer, { passive:true });
+    addEventListener('pointerdown', e=>{ setPointer(e); if(Math.hypot(target.x, target.y) < 1.4) pulse = 1; }, { passive:true });
+    addEventListener('pointerup', e=>{ if(e.pointerType === 'touch') leave(); });
+    document.documentElement.addEventListener('pointerleave', leave);
+    addEventListener('blur', leave);
+  }
+
+  // --- loop ------------------------------------------------------------------
+  const smooth = { x:9, y:9, prox:0, hover:0, act:0 };
+  let active = false, phase = 0, last = 0, slow = 0, frames = 0;
+  const ss = (a,b,x)=>{ const k = Math.min(Math.max((x-a)/(b-a),0),1); return k*k*(3-2*k); };
+
   renderer.setAnimationLoop(ms=>{
     if(document.hidden){ last = ms; return; }
-    const dt = Math.min((ms - last)*0.001, 0.05); last = ms;
-    activeSmooth += ((active ? 1 : 0) - activeSmooth)*Math.min(dt*4, 1);
+    const dtRaw = (ms - last)*0.001; last = ms;
+    const dt = Math.min(dtRaw, 0.05);
+
+    // adaptive resolution: if the GPU struggles, render fewer pixels
+    if(dtRaw > 0){ frames++; if(dtRaw > 0.034) slow++; }
+    if(frames >= 45){ if(slow > 25 && dpr > 1){ dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); renderer.setSize(innerWidth, innerHeight); } frames = slow = 0; }
+
+    const k = Math.min(dt*7, 1);
+    const far = Math.hypot(target.x, target.y) > 6;
+    const dist = Math.hypot(target.x, target.y);
+    smooth.prox  += ((far ? 0 : ss(2.6, 0.55, dist)) - smooth.prox)*k;
+    smooth.hover += ((far ? 0 : ss(1.0, 0.45, dist)) - smooth.hover)*k;
+    if(far){ smooth.x += (0 - smooth.x)*k*0.5; smooth.y += (0 - smooth.y)*k*0.5; }
+    else   { smooth.x += (Math.max(-3, Math.min(3, target.x)) - smooth.x)*k; smooth.y += (Math.max(-3, Math.min(3, target.y)) - smooth.y)*k; }
+    smooth.act += ((active ? 1 : 0) - smooth.act)*Math.min(dt*4, 1);
+    pulse = Math.max(0, pulse - dt*0.9);
+
+    const energy = Math.max(smooth.act, smooth.hover*0.75);
     if(!reduced){
-      phase += dt*(1 + activeSmooth*2.4);
+      phase += dt*(1 + energy*2.2 + smooth.prox*0.6);
       const time = ms*0.001;
       for(let i=0;i<paths.length/6;i++){
         const f = (time*.16 + i*.137)%1;
@@ -288,8 +250,12 @@ export function startScene(){
       }
       tracerGeometry.attributes.position.needsUpdate = true;
     }
-    uniforms.uTime.value = reduced ? 4.0 : phase + 4.0;
-    uniforms.uActive.value = reduced ? 0 : activeSmooth;
+    uniforms.uTime.value   = reduced ? 5.0 : phase + 5.0;
+    uniforms.uActive.value = reduced ? 0 : smooth.act;
+    uniforms.uProx.value   = smooth.prox;
+    uniforms.uHover.value  = smooth.hover;
+    uniforms.uPulse.value  = pulse*pulse;
+    uniforms.uMouse.value.set(smooth.x, smooth.y);
     renderer.render(scene, camera);
   });
   return value=>{ active = value; };
